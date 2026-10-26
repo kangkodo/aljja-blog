@@ -1,0 +1,26 @@
+---
+import { GISCUS } from '../config';
+
+const configured = GISCUS.repo && GISCUS.repoId && GISCUS.category && GISCUS.categoryId;
+---
+
+{configured && (
+  <section class="mt-12">
+    <script
+      src="https://giscus.app/client.js"
+      data-repo={GISCUS.repo}
+      data-repo-id={GISCUS.repoId}
+      data-category={GISCUS.category}
+      data-category-id={GISCUS.categoryId}
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="bottom"
+      data-theme="light"
+      data-lang="ko"
+      crossorigin="anonymous"
+      async
+    ></script>
+  </section>
+)}

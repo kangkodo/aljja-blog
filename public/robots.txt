@@ -1,0 +1,19 @@
+User-agent: GPTBot
+User-agent: CCBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: PerplexityBot
+User-agent: Bytespider
+User-agent: meta-externalagent
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: Claude-User
+Allow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://aljjatip.com/sitemap.xml

@@ -1,0 +1,130 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Base from './Base.astro';
+import Giscus from '../components/Giscus.astro';
+import { SITE, AI_DEFENSE_HTML, CANARY_STRING } from '../config';
+
+interface Props {
+  entry: CollectionEntry<'posts'>;
+  headings: { depth: number; slug: string; text: string }[];
+  prev?: CollectionEntry<'posts'>;
+  next?: CollectionEntry<'posts'>;
+  related: CollectionEntry<'posts'>[];
+}
+
+const { entry, headings, prev, next, related } = Astro.props;
+const { title, description, date, updated, category, tags, summary, faq } = entry.data;
+const slug = entry.id.replace(/\.md$/, '');
+const canonical = `${SITE.url}/posts/${slug}/`;
+const readingMinutes = Math.max(1, Math.round(entry.body.length / 600));
+const toc = headings.filter((h) => h.depth <= 3);
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: date.toISOString(),
+  ...(updated ? { dateModified: updated.toISOString() } : {}),
+  author: { '@type': 'Person', name: SITE.author },
+};
+
+const faqLd =
+  faq.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faq.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      }
+    : null;
+
+const jsonLd = faqLd ? [articleLd, faqLd] : articleLd;
+
+function fmt(d: Date) {
+  return d.toISOString().slice(0, 10);
+}
+---
+
+<Base title={title} description={description} canonical={canonical} jsonLd={jsonLd}>
+  <nav class="text-sm text-gray-500 mb-4">
+    <a href="/" class="no-underline text-gray-500">홈</a> &gt;
+    <a href={`/category/${encodeURIComponent(category)}/`} class="no-underline text-gray-500">{category}</a>
+  </nav>
+
+  <h1 class="text-3xl font-bold leading-snug mb-3">{title}</h1>
+
+  <p class="text-sm text-gray-500 mb-6">
+    {fmt(date)}
+    {updated && ` · 업데이트 ${fmt(updated)}`} · {category} · 약 {readingMinutes}분
+  </p>
+
+  <div class="callout callout-summary">
+    <strong>핵심 요약</strong>
+    <p class="!m-0 mt-1">{summary ?? description}</p>
+  </div>
+
+  {toc.length > 0 && (
+    <nav class="toc">
+      <strong>목차</strong>
+      <ul>
+        {toc.map((h) => (
+          <li class={h.depth === 3 ? 'ml-4' : ''}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
+
+  {AI_DEFENSE_HTML && <div aria-hidden="true" style="font-size:1px; line-height:1px; height:1px; overflow:hidden;" set:html={AI_DEFENSE_HTML} />}
+
+  <article class="prose">
+    <slot />
+  </article>
+
+  {faq.length > 0 && (
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-4">자주 묻는 질문</h2>
+      {faq.map((f) => (
+        <div class="mb-4">
+          <p class="font-bold mb-1">Q. {f.q}</p>
+          <p class="text-gray-700 m-0">{f.a}</p>
+        </div>
+      ))}
+    </section>
+  )}
+
+  {tags.length > 0 && (
+    <p class="mt-8 text-sm">
+      {tags.map((t) => (
+        <a href={`/tag/${encodeURIComponent(t)}/`} class="mr-2 no-underline">#{t}</a>
+      ))}
+    </p>
+  )}
+
+  <nav class="flex justify-between border-t border-gray-200 mt-8 pt-4 text-sm">
+    <span>{prev ? <a href={`/posts/${prev.id.replace(/\.md$/, '')}/`} class="no-underline">← {prev.data.title}</a> : ''}</span>
+    <span>{next ? <a href={`/posts/${next.id.replace(/\.md$/, '')}/`} class="no-underline">{next.data.title} →</a> : ''}</span>
+  </nav>
+
+  {related.length > 0 && (
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-4">관련 글</h2>
+      <ul>
+        {related.map((r) => (
+          <li>
+            <a href={`/posts/${r.id.replace(/\.md$/, '')}/`} class="no-underline text-gray-800">{r.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {CANARY_STRING && <p aria-hidden="true" style="font-size:1px; color:transparent; user-select:none;">{CANARY_STRING}</p>}
+
+  <Giscus />
+</Base>

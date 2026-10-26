@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="검색" description="알짜 사이트 내 검색">
+  <h1 class="text-2xl font-bold mb-6">검색</h1>
+  <input
+    id="search-input"
+    type="search"
+    placeholder="검색어를 입력하세요"
+    class="w-full border border-gray-300 rounded px-3 py-2 mb-6"
+  />
+  <div id="search-results" class="space-y-4"></div>
+
+  <script type="module">
+    const input = document.getElementById('search-input');
+    const resultsEl = document.getElementById('search-results');
+    let pagefind = null;
+
+    async function ensurePagefind() {
+      if (!pagefind) {
+        pagefind = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+        await pagefind.init();
+      }
+      return pagefind;
+    }
+
+    input.addEventListener('input', async () => {
+      const query = input.value.trim();
+      if (!query) {
+        resultsEl.innerHTML = '';
+        return;
+      }
+      const pf = await ensurePagefind();
+      const search = await pf.search(query);
+      const data = await Promise.all(search.results.slice(0, 10).map((r) => r.data()));
+      resultsEl.innerHTML = data.length
+        ? data
+            .map(
+              (d) =>
+                `<div><a href="${d.url}" class="font-bold no-underline text-gray-900">${d.meta.title}</a><p class="text-sm text-gray-600 m-0">${d.excerpt}</p></div>`,
+            )
+            .join('')
+        : '<p class="text-gray-500">검색 결과가 없습니다.</p>';
+    });
+  </script>
+</Base>

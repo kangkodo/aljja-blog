@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return paginate(posts, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+const categories = [...new Set(page.data.map((p: any) => p.data.category))];
+---
+
+<Base title={SITE.name} description={SITE.description}>
+  <h1 class="sr-only">{SITE.name}</h1>
+  <p class="text-gray-600 mb-8">{SITE.description}</p>
+
+  <ul class="space-y-6">
+    {page.data.map((post: any) => (
+      <li>
+        <a href={`/posts/${post.id.replace(/\.md$/, '')}/`} class="no-underline">
+          <span class="block text-lg font-bold text-gray-900">{post.data.title}</span>
+        </a>
+        <p class="text-gray-600 text-sm m-0 mt-1">{post.data.description}</p>
+        <p class="text-gray-400 text-xs m-0 mt-1">
+          {post.data.date.toISOString().slice(0, 10)} · {post.data.category}
+        </p>
+      </li>
+    ))}
+  </ul>
+
+  <nav class="flex justify-between mt-10 text-sm">
+    <span>{page.url.prev ? <a href={page.url.prev} class="no-underline">← 이전</a> : ''}</span>
+    <span>{page.url.next ? <a href={page.url.next} class="no-underline">다음 →</a> : ''}</span>
+  </nav>
+</Base>
