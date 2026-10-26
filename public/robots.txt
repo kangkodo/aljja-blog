@@ -16,4 +16,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://aljjatip.com/sitemap.xml
+Sitemap: https://aljjatip.com/sitemap-index.xml
