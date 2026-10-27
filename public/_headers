@@ -1,14 +1,8 @@
 # Cloudflare Pages 응답 헤더. HTML 페이지만 브라우저에 5분 보관한다.
 # 기본값(max-age=0, must-revalidate)이면 prefetch로 미리 받은 페이지도 클릭 때 다시 받아 버린다.
 # 배포 직후 최대 5분은 이전 페이지가 보일 수 있다.
-# 이미지·JS·CSS(4시간)와 rss.xml·검색 색인 json(0)은 건드리지 않는다. 페이지 경로가 늘면 여기에 추가.
+# 페이지 주소는 모두 /로 끝난다. 이미지·JS·CSS(4시간)와 rss.xml·검색 색인 json(0)은 건드리지 않는다.
 /
   Cache-Control: public, max-age=300
-/:page/
-  Cache-Control: public, max-age=300
-/category/*
-  Cache-Control: public, max-age=300
-/posts/*
-  Cache-Control: public, max-age=300
-/tag/*
+/*/
   Cache-Control: public, max-age=300
