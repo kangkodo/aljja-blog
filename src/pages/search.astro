@@ -46,6 +46,8 @@ import { SITE } from '../config';
       const data = await Promise.all(found.results.slice(0, 10).map((r) => r.data()));
       if (input.value.trim() !== query) return; // 더 최근 입력이 있으면 버린다
       if (!data.length) return message('검색 결과가 없습니다.');
+      const escaped = query.split(/\s+/).map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+      const terms = new RegExp(`(${escaped.join('|')})`, 'gi'); // 캡처 그룹이라 split 결과의 홀수 칸이 일치 부분
 
       const ul = document.createElement('ul');
       ul.className = 'border-t border-border';
@@ -58,7 +60,15 @@ import { SITE } from '../config';
         a.textContent = d.meta.title;
         const p = document.createElement('p');
         p.className = 't-body-sm text-text-3';
-        p.innerHTML = d.excerpt; // Pagefind가 이스케이프한 발췌문 + <mark>
+        // Pagefind는 일치한 단어를 통째로 <mark>한다("연" → 연말정산). 검색어 글자만 다시 칠한다.
+        const excerpt = document.createElement('template');
+        excerpt.innerHTML = d.excerpt;
+        excerpt.content.textContent.split(terms).forEach((part, i) => {
+          if (i % 2 === 0) return p.append(part);
+          const mark = document.createElement('mark');
+          mark.textContent = part;
+          p.append(mark);
+        });
         li.append(a, p);
         ul.append(li);
       }
