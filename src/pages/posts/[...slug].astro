@@ -1,28 +1,25 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import PostLayout from '../../layouts/Post.astro';
+import { getPosts, postSlug } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
-  return posts.map((entry) => ({
-    params: { slug: entry.id.replace(/\.md$/, '') },
-    props: { entry },
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { slug: postSlug(post) },
+    props: {
+      post,
+      prev: posts[i + 1],
+      next: posts[i - 1],
+      related: posts.filter((p) => p.id !== post.id && p.data.category === post.data.category).slice(0, 3),
+    },
   }));
 }
 
-const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
-
-const all = await getCollection('posts', ({ data }) => !data.draft);
-const sorted = all.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const idx = sorted.findIndex((p) => p.id === entry.id);
-const prev = sorted[idx + 1];
-const next = sorted[idx - 1];
-const related = sorted
-  .filter((p) => p.id !== entry.id && p.data.category === entry.data.category)
-  .slice(0, 3);
+const { post, prev, next, related } = Astro.props;
+const { Content } = await render(post);
 ---
 
-<PostLayout entry={entry} headings={headings} prev={prev} next={next} related={related}>
+<PostLayout post={post} prev={prev} next={next} related={related}>
   <Content />
 </PostLayout>

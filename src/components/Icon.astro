@@ -1,0 +1,31 @@
+---
+// 장식용 아이콘. 의미는 감싸는 버튼·링크의 aria-label이 전달한다.
+const paths = {
+  search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  prev: '<path d="M15 6l-6 6 6 6"/>',
+  next: '<path d="M9 6l6 6-6 6"/>',
+};
+
+interface Props {
+  name: keyof typeof paths;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 20, class: className } = Astro.props;
+---
+
+<svg
+  aria-hidden="true"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  set:html={paths[name]}
+/>

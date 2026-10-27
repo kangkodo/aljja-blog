@@ -1,0 +1,31 @@
+---
+// 글 상단: 브레드크럼 → 제목 → 메타줄 → 핵심 요약
+import { categoryUrl, formatDate, readingMinutes, type Post } from '../../lib/posts';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { title, description, date, updated, category, summary } = post.data;
+const meta = [
+  formatDate(date),
+  updated && `업데이트 ${formatDate(updated)}`,
+  category,
+  `약 ${readingMinutes(post.body)}분`,
+].filter(Boolean);
+---
+
+<nav aria-label="브레드크럼" data-pagefind-ignore class="flex items-center gap-2 t-caption text-muted">
+  <a href="/" class="py-3 sm:py-2.5">홈</a>
+  <span aria-hidden="true">/</span>
+  <a href={categoryUrl(category)} class="py-3 text-accent sm:py-2.5">{category}</a>
+</nav>
+
+<h1 class="mt-1 mb-3 t-display sm:mt-3 sm:mb-4">{title}</h1>
+<p data-pagefind-ignore class="mb-6 t-caption text-muted sm:mb-8">{meta.join(' · ')}</p>
+
+<section aria-label="핵심 요약" class="mb-8 rounded-xl bg-accent-soft px-[18px] pt-[18px] pb-4 sm:mb-10 sm:px-6 sm:pt-6 sm:pb-[22px]">
+  <p data-pagefind-ignore class="mb-1.5 t-label text-accent sm:mb-2">핵심 요약</p>
+  <p class="t-body-sm">{summary ?? description}</p>
+</section>

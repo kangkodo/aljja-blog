@@ -13,6 +13,7 @@ const posts = defineCollection({
     draft: z.boolean().default(false),
     summary: z.string().optional(),
     faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+    ogTitle: z.string().optional(), // 공유 이미지용 짧은 제목, 줄바꿈(\n) 가능. 없으면 title
   }),
 });
 

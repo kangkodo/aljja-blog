@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>알짜 공유 이미지</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1200px; height: 630px; box-sizing: border-box; padding: 64px 72px; background: #0b6e4f; color: #ffffff; font-family: 'IBM Plex Sans KR', system-ui, sans-serif; display: flex; flex-direction: column; justify-content: space-between">
+  <div style="display: flex; align-items: center; justify-content: space-between">
+    <div style="display: flex; align-items: center; gap: 14px">
+      <span style="width: 44px; height: 44px; border-radius: 12px; background: #ffffff; color: #0b6e4f; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700">알</span>
+      <span style="font-size: 32px; font-weight: 700; letter-spacing: -0.02em">알짜</span>
+    </div>
+    <span style="padding: 8px 18px; border-radius: 999px; border: 2px solid rgba(255,255,255,0.7); font-size: 22px; font-weight: 700">{{category}}</span>
+  </div>
+
+  <p style="margin: 0; max-width: 1000px; font-size: 64px; line-height: 1.3; font-weight: 700; letter-spacing: -0.03em; white-space: pre-line">{{title}}</p>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 22px; color: #d6eadf">
+    <span>aljjatip.com</span>
+    <span>생활 · 돈 · 행정 — 알아두면 쓸모있는 정보</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"title":{"editor":"text","default":"전입신고, 정부24로\n집에서 끝내는 순서"},"category":{"editor":"text","default":"행정"},"$preview":{"width":1200,"height":630}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      title: this.props.title ?? '전입신고, 정부24로\n집에서 끝내는 순서',
+      category: this.props.category ?? '행정'
+    };
+  }
+}
+</script>
+</body>
+</html>

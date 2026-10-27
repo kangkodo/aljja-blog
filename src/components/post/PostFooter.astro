@@ -1,0 +1,58 @@
+---
+// 글 하단: 오류 제보 안내 → 태그 → 이전/다음 글 → 관련 글
+import { CONTACT } from '../../config';
+import { postUrl, tagUrl, type Post } from '../../lib/posts';
+
+interface Props {
+  tags: string[];
+  prev?: Post; // 더 오래된 글
+  next?: Post; // 더 최신 글
+  related: Post[];
+}
+
+const { tags, prev, next, related } = Astro.props;
+const card = 'flex flex-col gap-1 rounded-xl border border-border px-4 py-3.5 sm:gap-1.5 sm:px-5 sm:py-[18px]';
+---
+
+<p class="mt-7 t-caption text-muted sm:mt-8">
+  정보가 바뀌었거나 틀린 부분을 발견하셨다면{' '}
+  <a href={`mailto:${CONTACT.support}`} class="text-accent underline underline-offset-3">{CONTACT.support}</a>으로 알려 주세요.
+</p>
+
+{tags.length > 0 && (
+  <nav aria-label="태그" class="mt-8 flex flex-wrap gap-2 sm:mt-10">
+    {tags.map((t) => (
+      <a href={tagUrl(t)} class="rounded-full bg-surface-2 px-3.5 py-[11px] t-caption text-text-2 sm:py-2.5">#{t}</a>
+    ))}
+  </nav>
+)}
+
+{(prev || next) && (
+  <nav aria-label="이전 글, 다음 글" class="mt-8 grid gap-2.5 sm:mt-10 sm:grid-cols-2 sm:gap-4">
+    {prev && (
+      <a href={postUrl(prev)} class={card}>
+        <span class="t-caption text-muted">← 이전 글</span>
+        <span class="t-strong-sm">{prev.data.title}</span>
+      </a>
+    )}
+    {next && (
+      <a href={postUrl(next)} class:list={[card, 'text-right sm:col-start-2']}>
+        <span class="t-caption text-muted">다음 글 →</span>
+        <span class="t-strong-sm">{next.data.title}</span>
+      </a>
+    )}
+  </nav>
+)}
+
+{related.length > 0 && (
+  <section aria-labelledby="related" class="mt-11 sm:mt-14">
+    <h2 id="related" class="mb-1.5 t-h3 sm:mb-2">관련 글</h2>
+    <ul class="border-t border-ink">
+      {related.map((r) => (
+        <li class="border-b border-border">
+          <a href={postUrl(r)} class="block py-3.5 t-body-sm sm:py-4">{r.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

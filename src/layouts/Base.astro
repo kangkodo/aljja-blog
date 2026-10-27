@@ -1,58 +1,30 @@
 ---
-import { SITE, CF_ANALYTICS_TOKEN } from '../config';
+// 모든 페이지의 뼈대: head + 헤더 + main + 푸터
+import BaseHead, { type Props as HeadProps } from '../components/layout/BaseHead.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
 import '../styles/global.css';
 
-interface Props {
-  title: string;
-  description: string;
-  canonical?: string;
-  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+interface Props extends HeadProps {
+  /** 헤더에서 활성화할 메뉴 href */
+  active?: string;
+  /** main의 폭·여백. 생략하면 기본 768px 레이아웃 */
+  class?: string;
 }
 
-const { title, description, canonical, jsonLd } = Astro.props;
-const pageTitle = title === SITE.name ? title : `${title} | ${SITE.name}`;
-const canonicalUrl = canonical ?? Astro.url.href;
+const { active, class: mainClass = 'max-w-[768px] pt-8 pb-10 sm:pt-12 sm:pb-12', ...head } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="ko">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{pageTitle}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:site_name" content={SITE.name} />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={pageTitle} />
-    <meta name="twitter:description" content={description} />
-    <link rel="alternate" type="application/rss+xml" title={SITE.name} href={`${SITE.url}/rss.xml`} />
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
-    {CF_ANALYTICS_TOKEN && (
-      <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={`{"token": "${CF_ANALYTICS_TOKEN}"}`}></script>
-    )}
+    <BaseHead {...head} />
   </head>
-  <body>
-    <header class="border-b border-gray-200">
-      <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="/" class="text-xl font-bold text-gray-900 no-underline">{SITE.name}</a>
-        <nav class="flex gap-4 text-sm">
-          <a href="/about/" class="text-gray-600 no-underline">소개</a>
-          <a href="/rss.xml" class="text-gray-600 no-underline">RSS</a>
-        </nav>
-      </div>
-    </header>
-    <main class="max-w-3xl mx-auto px-4 py-8">
+  <body class="flex min-h-dvh flex-col">
+    <Header active={active} />
+    <main class:list={['mx-auto w-full flex-1 px-4', mainClass]}>
       <slot />
     </main>
-    <footer class="border-t border-gray-200">
-      <div class="max-w-3xl mx-auto px-4 py-6 text-sm text-gray-500">
-        © {new Date().getFullYear()} {SITE.name} · {SITE.description}
-      </div>
-    </footer>
+    <Footer />
   </body>
 </html>

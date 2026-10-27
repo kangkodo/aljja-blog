@@ -1,0 +1,23 @@
+---
+// 글 목록 (홈·카테고리·태그): 날짜 · 카테고리 → 제목 → 설명
+import { formatDate, postUrl, type Post } from '../../lib/posts';
+
+interface Props {
+  posts: Post[];
+  showCategory?: boolean;
+}
+
+const { posts, showCategory = false } = Astro.props;
+---
+
+<ul class="border-t border-ink">
+  {posts.map((post) => (
+    <li class="flex flex-col gap-1.5 border-b border-border py-5 sm:gap-2 sm:py-6">
+      <p class="t-caption text-muted">
+        {formatDate(post.data.date)}{showCategory && ` · ${post.data.category}`}
+      </p>
+      <a href={postUrl(post)} class="t-h3">{post.data.title}</a>
+      <p class="t-body-sm text-text-3">{post.data.description}</p>
+    </li>
+  ))}
+</ul>

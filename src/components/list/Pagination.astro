@@ -1,0 +1,60 @@
+---
+// 홈 페이지 이동: ← 이전 · 번호 · 다음 → (UI 명세 5.1.1)
+// 전체 1페이지면 아무것도 렌더링하지 않는다. 번호 줄은 데스크톱(7칸)·모바일(6칸) 두 벌을 CSS로 전환한다.
+// 첫 페이지의 이전·마지막 페이지의 다음은 숨기지 않고 흐린 글자로 둔다 (번호 줄이 흔들리지 않게).
+import type { Page } from 'astro';
+import Icon from '../Icon.astro';
+import { pageItems, pageHref } from '../../lib/pagination';
+
+interface Props {
+  page: Page;
+}
+
+const { currentPage: cur, lastPage: total } = Astro.props.page;
+const variants = [
+  { items: pageItems(cur, total), class: 'flex gap-1 max-sm:hidden' },
+  { items: pageItems(cur, total, true), class: 'flex gap-0.5 sm:hidden' },
+];
+const box = 'flex h-11 min-w-11 items-center justify-center rounded-lg';
+const step = `${box} sm:px-3`;
+---
+
+{total > 1 && (
+  <nav aria-label="페이지 이동" class="flex items-center justify-center gap-0.5 pt-7 t-body-sm sm:gap-2 sm:pt-10">
+    {cur > 1 ? (
+      <a href={pageHref(cur - 1)} aria-label="이전 페이지" class={step}>
+        <span class="max-sm:hidden">← 이전</span><Icon name="prev" size={18} class="sm:hidden" />
+      </a>
+    ) : (
+      <span aria-disabled="true" aria-label="이전 페이지" class:list={[step, 'text-disabled']}>
+        <span class="max-sm:hidden">← 이전</span><Icon name="prev" size={18} class="sm:hidden" />
+      </span>
+    )}
+
+    {variants.map((v) => (
+      <ol class={v.class}>
+        {v.items.map((n) => (
+          <li>
+            {n === 0 ? (
+              <span aria-hidden="true" class="flex h-11 min-w-6 items-center justify-center text-muted sm:min-w-7">…</span>
+            ) : n === cur ? (
+              <span aria-current="page" class:list={[box, 'bg-accent font-bold text-white']}>{n}</span>
+            ) : (
+              <a href={pageHref(n)} aria-label={`${n}페이지`} class={box}>{n}</a>
+            )}
+          </li>
+        ))}
+      </ol>
+    ))}
+
+    {cur < total ? (
+      <a href={pageHref(cur + 1)} aria-label="다음 페이지" class={step}>
+        <span class="max-sm:hidden">다음 →</span><Icon name="next" size={18} class="sm:hidden" />
+      </a>
+    ) : (
+      <span aria-disabled="true" aria-label="다음 페이지" class:list={[step, 'text-disabled']}>
+        <span class="max-sm:hidden">다음 →</span><Icon name="next" size={18} class="sm:hidden" />
+      </span>
+    )}
+  </nav>
+)}

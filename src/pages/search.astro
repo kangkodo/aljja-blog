@@ -1,47 +1,84 @@
 ---
+// 검색 (UI 명세 5.4): 입력할 때마다 Pagefind로 검색, 상위 10개.
+// 헤더 검색에서 넘어온 ?q= 값이 있으면 입력창에 채우고 바로 검색한다.
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../config';
 ---
 
-<Base title="검색" description="알짜 사이트 내 검색">
-  <h1 class="text-2xl font-bold mb-6">검색</h1>
-  <input
-    id="search-input"
-    type="search"
-    placeholder="검색어를 입력하세요"
-    class="w-full border border-gray-300 rounded px-3 py-2 mb-6"
-  />
-  <div id="search-results" class="space-y-4"></div>
+<Base title="검색" description={`${SITE.name} 사이트 내 검색`}>
+  <h1 class="mb-5 t-display sm:mb-6">검색</h1>
+  <label for="q" class="sr-only">검색어</label>
+  <div class="relative">
+    <Icon name="search" size={20} class="pointer-events-none absolute top-[15px] left-3.5 size-[18px] text-muted sm:top-[18px] sm:left-[18px] sm:size-5" />
+    <input
+      id="q"
+      type="search"
+      placeholder="검색어를 입력하세요"
+      autocomplete="off"
+      class="h-[50px] w-full rounded-[10px] border-[1.5px] border-ink bg-white pr-3.5 pl-10 text-base text-ink sm:h-14 sm:pr-[18px] sm:pl-[50px] sm:text-[17px]"
+    />
+  </div>
+  <div id="results" aria-live="polite" class="mt-5 sm:mt-7"></div>
 
-  <script type="module">
-    const input = document.getElementById('search-input');
-    const resultsEl = document.getElementById('search-results');
-    let pagefind = null;
+  <script is:inline>
+    const input = document.getElementById('q');
+    const results = document.getElementById('results');
+    let pagefind;
 
-    async function ensurePagefind() {
-      if (!pagefind) {
-        pagefind = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
-        await pagefind.init();
-      }
-      return pagefind;
+    function message(text) {
+      results.innerHTML = '';
+      const p = document.createElement('p');
+      p.className = 't-body-sm text-text-3 py-7 sm:py-8';
+      p.textContent = text;
+      results.append(p);
     }
 
-    input.addEventListener('input', async () => {
+    async function search() {
       const query = input.value.trim();
-      if (!query) {
-        resultsEl.innerHTML = '';
-        return;
+      if (!query) return results.replaceChildren();
+      if (!pagefind) {
+        message('검색 중…');
+        pagefind = await import('/pagefind/pagefind.js');
+        await pagefind.init();
       }
-      const pf = await ensurePagefind();
-      const search = await pf.search(query);
-      const data = await Promise.all(search.results.slice(0, 10).map((r) => r.data()));
-      resultsEl.innerHTML = data.length
-        ? data
-            .map(
-              (d) =>
-                `<div><a href="${d.url}" class="font-bold no-underline text-gray-900">${d.meta.title}</a><p class="text-sm text-gray-600 m-0">${d.excerpt}</p></div>`,
-            )
-            .join('')
-        : '<p class="text-gray-500">검색 결과가 없습니다.</p>';
-    });
+      const found = await pagefind.search(query);
+      const data = await Promise.all(found.results.slice(0, 10).map((r) => r.data()));
+      if (input.value.trim() !== query) return; // 더 최근 입력이 있으면 버린다
+      if (!data.length) return message('검색 결과가 없습니다.');
+
+      const ul = document.createElement('ul');
+      ul.className = 'border-t border-border';
+      for (const d of data) {
+        const li = document.createElement('li');
+        li.className = 'flex flex-col gap-1.5 border-b border-border py-[18px] sm:py-5';
+        const a = document.createElement('a');
+        a.href = d.url;
+        a.className = 't-h3';
+        a.textContent = d.meta.title;
+        const p = document.createElement('p');
+        p.className = 't-body-sm text-text-3';
+        p.innerHTML = d.excerpt; // Pagefind가 이스케이프한 발췌문 + <mark>
+        li.append(a, p);
+        ul.append(li);
+      }
+      results.replaceChildren(ul);
+    }
+
+    input.addEventListener('input', search);
+    const q = new URLSearchParams(location.search).get('q');
+    if (q) {
+      input.value = q;
+      search();
+    }
   </script>
 </Base>
+
+<style is:global>
+  #results mark {
+    background: var(--color-mark);
+    color: var(--color-ink);
+    padding: 0 2px;
+    border-radius: 3px;
+  }
+</style>

@@ -1,38 +1,25 @@
 ---
-import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
 import Base from '../layouts/Base.astro';
-import { SITE } from '../config';
+import PostList from '../components/list/PostList.astro';
+import Pagination from '../components/list/Pagination.astro';
+import { SITE, PAGE_SIZE } from '../config';
+import { getPosts } from '../lib/posts';
 
-export async function getStaticPaths({ paginate }: { paginate: any }) {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
-  posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-  return paginate(posts, { pageSize: 10 });
-}
+export const getStaticPaths = (async ({ paginate }) => paginate(await getPosts(), { pageSize: PAGE_SIZE })) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
-const categories = [...new Set(page.data.map((p: any) => p.data.category))];
 ---
 
-<Base title={SITE.name} description={SITE.description}>
+<Base
+  title={page.currentPage === 1 ? SITE.name : `${page.currentPage}페이지`}
+  description={SITE.description}
+  active="/"
+  class="max-w-[768px] pt-8 pb-6 sm:pt-12 sm:pb-8"
+>
   <h1 class="sr-only">{SITE.name}</h1>
-  <p class="text-gray-600 mb-8">{SITE.description}</p>
-
-  <ul class="space-y-6">
-    {page.data.map((post: any) => (
-      <li>
-        <a href={`/posts/${post.id.replace(/\.md$/, '')}/`} class="no-underline">
-          <span class="block text-lg font-bold text-gray-900">{post.data.title}</span>
-        </a>
-        <p class="text-gray-600 text-sm m-0 mt-1">{post.data.description}</p>
-        <p class="text-gray-400 text-xs m-0 mt-1">
-          {post.data.date.toISOString().slice(0, 10)} · {post.data.category}
-        </p>
-      </li>
-    ))}
-  </ul>
-
-  <nav class="flex justify-between mt-10 text-sm">
-    <span>{page.url.prev ? <a href={page.url.prev} class="no-underline">← 이전</a> : ''}</span>
-    <span>{page.url.next ? <a href={page.url.next} class="no-underline">다음 →</a> : ''}</span>
-  </nav>
+  <p class="mb-1.5 t-label text-accent sm:mb-2">{SITE.kicker}</p>
+  <p class="mb-7 t-h2 sm:mb-10">{SITE.tagline}</p>
+  <PostList posts={page.data} showCategory />
+  <Pagination page={page} />
 </Base>

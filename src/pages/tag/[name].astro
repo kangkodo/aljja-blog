@@ -1,9 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
-import Base from '../../layouts/Base.astro';
+import Archive from '../../layouts/Archive.astro';
+import { getPosts } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  const posts = await getPosts();
   const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
   return tags.map((name) => ({
     params: { name },
@@ -12,19 +12,6 @@ export async function getStaticPaths() {
 }
 
 const { name } = Astro.params;
-const { posts } = Astro.props;
 ---
 
-<Base title={`#${name}`} description={`#${name} 관련 글 목록`}>
-  <h1 class="text-2xl font-bold mb-6">#{name}</h1>
-  <ul class="space-y-5">
-    {posts.map((post) => (
-      <li>
-        <a href={`/posts/${post.id.replace(/\.md$/, '')}/`} class="no-underline">
-          <span class="block font-bold text-gray-900">{post.data.title}</span>
-        </a>
-        <p class="text-gray-600 text-sm m-0 mt-1">{post.data.description}</p>
-      </li>
-    ))}
-  </ul>
-</Base>
+<Archive label="태그" heading={`#${name}`} posts={Astro.props.posts} />

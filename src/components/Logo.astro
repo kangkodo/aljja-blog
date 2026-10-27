@@ -1,0 +1,12 @@
+---
+// 임시 로고. 로고 이미지를 받으면 이 파일만 교체한다 (OG 이미지: src/lib/og.ts, 파비콘: public/favicon.svg).
+import { SITE } from '../config';
+---
+
+<a href="/" aria-label={`${SITE.name} 홈`} class="flex min-h-11 items-center gap-2 sm:gap-2.5">
+  <span
+    aria-hidden="true"
+    class="flex size-[26px] items-center justify-center rounded-[7px] bg-accent text-[14px] font-bold text-white sm:size-7 sm:rounded-lg sm:text-[15px]"
+  >알</span>
+  <span class="text-[19px] font-bold tracking-[-0.02em] sm:text-[20px]">{SITE.name}</span>
+</a>

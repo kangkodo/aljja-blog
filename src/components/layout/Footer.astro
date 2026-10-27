@@ -1,0 +1,26 @@
+---
+// 푸터: 저작권 + 소개·개인정보처리방침·RSS (UI 명세 4.3). 모바일은 링크 줄이 위.
+import { SITE } from '../../config';
+
+const links = [
+  { label: '소개', href: '/about/' },
+  { label: '개인정보처리방침', href: '/privacy/' },
+  { label: 'RSS', href: '/rss.xml' },
+];
+const path = Astro.url.pathname.replace(/\/?$/, '/');
+---
+
+<footer class="border-t border-border">
+  <div class="mx-auto flex max-w-[768px] flex-col-reverse px-4 pt-2 pb-7 t-caption text-muted sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-6 sm:pt-4 sm:pb-8">
+    <p class="sm:py-3">© {new Date().getFullYear()} {SITE.name} · {SITE.description}</p>
+    <nav aria-label="사이트 정보" class="flex flex-wrap gap-x-4">
+      {links.map(({ label, href }) => (
+        <a
+          href={href}
+          aria-current={href === path ? 'page' : undefined}
+          class="py-3 aria-[current=page]:font-bold aria-[current=page]:text-accent"
+        >{label}</a>
+      ))}
+    </nav>
+  </div>
+</footer>

@@ -1,0 +1,98 @@
+---
+// 헤더: 로고 / 카테고리 메뉴 + 검색 버튼 / 검색 펼침 영역 (UI 명세 4.2)
+import Logo from '../Logo.astro';
+import Icon from '../Icon.astro';
+import { getPosts, getCategories, categoryUrl } from '../../lib/posts';
+
+interface Props {
+  /** 활성화할 메뉴의 href. 소개·검색·개인정보처리방침·404는 비워 둔다. */
+  active?: string;
+}
+
+const { active } = Astro.props;
+const nav = [
+  { label: '전체', href: '/' },
+  ...getCategories(await getPosts()).map((c) => ({ label: c, href: categoryUrl(c) })),
+];
+---
+
+<header id="site-header" class="group border-b border-border">
+  <div class="flex h-14 items-center justify-center px-4 sm:h-16">
+    <Logo />
+  </div>
+
+  <nav aria-label="카테고리" class="border-t border-border-soft">
+    <div class="relative mx-auto flex max-w-[1200px] items-center sm:block sm:px-16">
+      <div class="min-w-0 flex-1 overflow-x-auto pl-11 sm:overflow-visible sm:pl-0">
+        <ul class="mx-auto flex w-max px-1 whitespace-nowrap sm:w-auto sm:flex-wrap sm:justify-center sm:gap-x-2 sm:px-0">
+          {nav.map(({ label, href }) => (
+            <li>
+              <a
+                href={href}
+                aria-current={href === active ? 'page' : undefined}
+                class="block p-3 t-body-sm text-text-3 sm:px-3.5 aria-[current=page]:font-bold aria-[current=page]:text-accent aria-[current=page]:shadow-[inset_0_-2px_0_var(--color-accent)]"
+              >{label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button
+        id="search-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-search"
+        aria-label="검색 열기"
+        class="flex size-11 flex-none cursor-pointer items-center justify-center rounded-lg text-ink group-data-open:bg-accent-soft sm:absolute sm:top-0.5 sm:right-3"
+      >
+        <Icon name="search" class="group-data-open:hidden" />
+        <Icon name="close" class="hidden group-data-open:block" />
+      </button>
+    </div>
+  </nav>
+
+  <div
+    id="site-search"
+    class="invisible grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity,visibility] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-open:visible group-data-open:grid-rows-[1fr] group-data-open:opacity-100 group-data-open:transition-[grid-template-rows,opacity] motion-reduce:transition-none"
+  >
+    <!-- 열 때는 visibility를 즉시 바꿔야 입력창에 포커스가 들어간다. 닫을 때만 0.3초 뒤에 숨긴다. -->
+    <div class="min-h-0 overflow-hidden">
+      <div class="border-t border-border-soft bg-surface">
+        <!-- JS 없이도 Enter로 /search/?q= 이동. 결과는 검색 페이지에서만 보여 준다. -->
+        <form action="/search/" method="get" role="search" class="mx-auto max-w-[768px] px-4 py-3 sm:pt-4 sm:pb-3.5">
+          <label for="site-q" class="sr-only">검색어</label>
+          <div class="relative">
+            <Icon name="search" size={18} class="pointer-events-none absolute top-[15px] left-3.5 text-muted sm:left-4" />
+            <input
+              id="site-q"
+              name="q"
+              type="search"
+              placeholder="검색어를 입력하세요"
+              class="h-12 w-full rounded-[10px] border-[1.5px] border-ink bg-white pr-3.5 pl-10 text-base text-ink sm:pr-4 sm:pl-11"
+            />
+          </div>
+          <p class="mt-2 t-caption text-muted max-sm:hidden">Enter를 누르면 검색 결과 페이지로 이동합니다</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const toggle = document.getElementById('search-toggle')!;
+  const input = document.getElementById('site-q') as HTMLInputElement;
+
+  function setOpen(open: boolean) {
+    header.toggleAttribute('data-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? '검색 닫기' : '검색 열기');
+    if (open) input.focus();
+  }
+
+  toggle.addEventListener('click', () => setOpen(!header.hasAttribute('data-open')));
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !header.hasAttribute('data-open')) return;
+    setOpen(false);
+    toggle.focus();
+  });
+</script>

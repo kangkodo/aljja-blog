@@ -1,30 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
-import Base from '../../layouts/Base.astro';
+import Archive from '../../layouts/Archive.astro';
+import { getPosts, getCategories, categoryUrl } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
-  const categories = [...new Set(posts.map((p) => p.data.category))];
-  return categories.map((name) => ({
+  const posts = await getPosts();
+  return getCategories(posts).map((name) => ({
     params: { name },
     props: { posts: posts.filter((p) => p.data.category === name) },
   }));
 }
 
 const { name } = Astro.params;
-const { posts } = Astro.props;
 ---
 
-<Base title={`${name} | 카테고리`} description={`${name} 관련 글 목록`}>
-  <h1 class="text-2xl font-bold mb-6">{name}</h1>
-  <ul class="space-y-5">
-    {posts.map((post) => (
-      <li>
-        <a href={`/posts/${post.id.replace(/\.md$/, '')}/`} class="no-underline">
-          <span class="block font-bold text-gray-900">{post.data.title}</span>
-        </a>
-        <p class="text-gray-600 text-sm m-0 mt-1">{post.data.description}</p>
-      </li>
-    ))}
-  </ul>
-</Base>
+<Archive label="카테고리" heading={name} posts={Astro.props.posts} active={categoryUrl(name)} />

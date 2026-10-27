@@ -1,0 +1,22 @@
+---
+// 카테고리·태그 목록 (UI 명세 5.3). 글은 발행일 내림차순으로 넘겨받는다.
+import Base from './Base.astro';
+import PostList from '../components/list/PostList.astro';
+import type { Post } from '../lib/posts';
+
+interface Props {
+  label: '카테고리' | '태그';
+  heading: string;
+  posts: Post[];
+  active?: string;
+}
+
+const { label, heading, posts, active } = Astro.props;
+---
+
+<Base title={`${heading} | ${label}`} description={`${heading} 관련 글 목록`} active={active}>
+  <p class="mb-2 t-label text-accent">{label}</p>
+  <h1 class="mb-2 t-display">{heading}</h1>
+  <p class="mb-6 t-caption text-muted sm:mb-8">글 {posts.length}개 · 최신순</p>
+  <PostList posts={posts} />
+</Base>
