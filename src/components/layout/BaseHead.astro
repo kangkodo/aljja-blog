@@ -13,7 +13,7 @@ export interface Props {
   noindex?: boolean;
 }
 
-const { title, description, canonical, ogImage = '/og.png', ogType = 'website', jsonLd, noindex } = Astro.props;
+const { title, description, canonical, ogImage = '/social/alzza-og-1200x630.jpg', ogType = 'website', jsonLd, noindex } = Astro.props;
 const pageTitle = title === SITE.name ? title : `${title} | ${SITE.name}`;
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, SITE.url).href;
 const imageUrl = new URL(ogImage, SITE.url).href;
@@ -24,7 +24,10 @@ const imageUrl = new URL(ogImage, SITE.url).href;
 <title>{pageTitle}</title>
 <meta name="description" content={description} />
 {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalUrl} />}
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" href="/icons/favicon-32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="/icons/favicon-192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
 
 <meta property="og:title" content={pageTitle} />

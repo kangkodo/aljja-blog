@@ -1,12 +1,18 @@
 ---
-// 임시 로고. 로고 이미지를 받으면 이 파일만 교체한다 (OG 이미지: src/lib/og.ts, 파비콘: public/favicon.svg).
+// 헤더 로고 (public/brand). 원본 비율 1280×536을 유지하고 높이만 정한다: 모바일 32px, 데스크톱 36px.
 import { SITE } from '../config';
 ---
 
-<a href="/" aria-label={`${SITE.name} 홈`} class="flex min-h-11 items-center gap-2 sm:gap-2.5">
-  <span
-    aria-hidden="true"
-    class="flex size-[26px] items-center justify-center rounded-[7px] bg-accent text-[14px] font-bold text-white sm:size-7 sm:rounded-lg sm:text-[15px]"
-  >알</span>
-  <span class="text-[19px] font-bold tracking-[-0.02em] sm:text-[20px]">{SITE.name}</span>
+<a href="/" aria-label={`${SITE.name} 홈`} class="flex min-h-11 items-center">
+  <picture>
+    <source type="image/webp" srcset="/brand/alzza-logo-160.webp 1x, /brand/alzza-logo-240.webp 2x, /brand/alzza-logo-320.webp 3x" />
+    <img
+      src="/brand/alzza-logo-160.png"
+      srcset="/brand/alzza-logo-240.png 2x, /brand/alzza-logo-320.png 3x"
+      width="160"
+      height="67"
+      alt={SITE.name}
+      class="block h-8 w-auto sm:h-9"
+    />
+  </picture>
 </a>

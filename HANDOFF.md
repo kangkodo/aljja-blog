@@ -20,7 +20,7 @@
 - [ ] AI 카피 방어 문구·카나리아 문자열 입력 — 소유자가 careit.kr 패키지에서 제공
 - [ ] Cloudflare Web Analytics 토큰 입력
 - [ ] AdSense 승인 후 `ADS` 설정 입력 + `public/ads.txt` 추가
-- [ ] 로고 이미지 받으면 교체 (`Logo.astro`, `src/lib/og.ts`, `public/favicon.svg`)
+- [x] 로고 이미지 적용 (`Logo.astro`, `src/lib/og.ts`, `public/brand`·`icons`·`social`, `favicon.ico`, `apple-touch-icon.png`)
 
 ## 기술 스택
 
@@ -62,8 +62,8 @@ npm test         # 페이지 번호 생략 규칙 테스트
 | `src/components/layout/` | `BaseHead`(메타·OG·폰트·스크립트), `Header`(메뉴·검색 토글), `Footer` |
 | `src/components/list/` | `PostList`, `Pagination` |
 | `src/components/post/` | `PostHeader`, `Faq`, `PostFooter` |
-| `src/components/` | `Logo`(임시 로고), `Icon` |
-| `src/pages/` | 홈(`[...page]`), 글, 카테고리, 태그, 검색, 소개, 개인정보처리방침, 404, RSS, `llms.txt`, OG 이미지(`og.png`, `og/[slug].png`) |
+| `src/components/` | `Logo`(로고 이미지), `Icon` |
+| `src/pages/` | 홈(`[...page]`), 글, 카테고리, 태그, 검색, 소개, 개인정보처리방침, 404, RSS, `llms.txt`, 글별 OG 이미지(`og/[slug].png`) |
 | `public/robots.txt` | AI 크롤러 선별 차단 규칙 (학습용 차단 / 온디맨드 허용) |
 | `docs/design/` | 디자인 시안 원본 + UI 명세서 v2 (구현 기준) |
 | `docs/설계서.md` | 초기 설계 스펙 (라우트·스키마·SEO/GEO/AEO) |
