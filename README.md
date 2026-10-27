@@ -3,7 +3,7 @@
 생활·돈·행정 분야에서 사람들이 가끔 검색하는 질문에 정확한 숫자·표·FAQ로 답하는 정적 블로그.
 
 - **도메인**: https://aljjatip.com
-- **스택**: Astro 7 (SSG) + Tailwind CSS 4 + Cloudflare Workers 정적 에셋
+- **스택**: Astro 7 (SSG) + Tailwind CSS 4 + Cloudflare Pages
 - **서버 없음** · DB 없음 · 인증 없음
 
 ## 시작하기

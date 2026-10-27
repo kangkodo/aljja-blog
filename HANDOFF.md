@@ -15,7 +15,7 @@
 
 - [x] UI 명세서 v2(`docs/design/알짜블로그-UI-명세서-v2.md`) 적용: 새 헤더·검색 토글·페이지 번호·푸터, 개인정보처리방침·404, OG 이미지
 - [x] 명세서 맨 앞 "개발 필수 체크리스트" 6개 항목 확인 완료
-- [x] GitHub 저장소 + Cloudflare Workers 자동 배포 연결 (소유자가 대시보드에서 설정)
+- [x] GitHub 저장소 + Cloudflare Pages 자동 배포 연결 (소유자가 대시보드에서 설정)
 - [ ] 개인정보처리방침 `[ ]` 항목 채우기 + 법률 검토 (`src/pages/privacy.astro`)
 - [ ] AI 카피 방어 문구·카나리아 문자열 입력 — 소유자가 careit.kr 패키지에서 제공
 - [ ] Cloudflare Web Analytics 토큰 입력
@@ -25,7 +25,7 @@
 ## 기술 스택
 
 - Astro 7 (SSG), Tailwind CSS v4, 마크다운은 Astro 기본 Sätteri 처리기
-- 호스팅: Cloudflare Workers 정적 에셋 (서버 없음, DB 없음, 인증 없음). 설정은 `wrangler.jsonc`
+- 호스팅: Cloudflare Pages (서버 없음, DB 없음, 인증 없음). 빌드 설정은 대시보드에서 관리, 출력 `dist`
 - 사이트 내 검색: Pagefind (빌드 시 정적 인덱스, 글 상세만 색인)
 - 공유 이미지: satori + @resvg/resvg-js로 빌드 시 글마다 PNG 생성 (폰트: `src/assets/fonts/`)
 - 분석: Cloudflare Web Analytics (토큰 설정 시에만 비콘 삽입)
@@ -65,7 +65,6 @@ npm test         # 페이지 번호 생략 규칙 테스트
 | `src/components/` | `Logo`(임시 로고), `Icon` |
 | `src/pages/` | 홈(`[...page]`), 글, 카테고리, 태그, 검색, 소개, 개인정보처리방침, 404, RSS, `llms.txt`, OG 이미지(`og.png`, `og/[slug].png`) |
 | `public/robots.txt` | AI 크롤러 선별 차단 규칙 (학습용 차단 / 온디맨드 허용) |
-| `wrangler.jsonc` | Workers 배포 설정 (없는 주소 → `404.html`) |
 | `docs/design/` | 디자인 시안 원본 + UI 명세서 v2 (구현 기준) |
 | `docs/설계서.md` | 초기 설계 스펙 (라우트·스키마·SEO/GEO/AEO) |
 
@@ -77,8 +76,8 @@ npm test         # 페이지 번호 생략 규칙 테스트
 
 ## 배포
 
-- main 푸시 → Cloudflare Workers Builds가 `npm run build` 후 `npx wrangler deploy` 실행.
-- `wrangler.jsonc`의 `name`은 대시보드 프로젝트명 `aljja-blog`와 같아야 한다.
+- main 푸시 → Cloudflare Pages가 `npm run build` 후 `dist`를 배포. 다른 브랜치 푸시는 미리보기 배포 (`<브랜치>.aljja-blog.pages.dev`).
+- 없는 주소는 Pages가 `dist/404.html`을 404 상태로 응답한다 (404.html이 없으면 홈으로 폴백되던 것이 v1의 SPA 폴백 원인).
 - 배포 상태는 대시보드 Workers & Pages → aljja-blog → Deployments에서 확인.
 
 ## 소유자가 제공해야 하는 것
@@ -90,10 +89,10 @@ npm test         # 페이지 번호 생략 규칙 테스트
 
 ## 결정 로그
 
-- 호스팅은 Cloudflare로 확정 (미리보기 배포·헤더 제어). 현재 Workers 정적 에셋 흐름
+- 호스팅은 Cloudflare로 확정 (미리보기 배포·헤더 제어). GitHub 연동 Cloudflare Pages (2026-10-27 미리보기 빌드 check 이름으로 확인)
 - 도메인은 aljjatip.com으로 확정 (.kr은 Cloudflare Registrar 미지원, 하이픈 도메인은 스팸 연상 때문에 제외)
 - 서버·DB·인증·관리자 화면 전부 제외 (정적 사이트로 충분)
 - 글은 마크다운으로 관리, Git이 원본
 - 2026-10-27: UI 명세서 v2 적용. 목차·Giscus 댓글 제거, privacy@는 사이트에 노출하지 않음
 - 2026-10-27: llms.txt는 `scripts/` 대신 Astro 엔드포인트(`src/pages/llms.txt.ts`)로 생성 (글 스키마를 그대로 사용)
-- 2026-10-27: `wrangler.jsonc` 추가 — 대시보드 기본값의 SPA 폴백(없는 주소 → 홈) 대신 404 페이지 응답
+- 2026-10-27: 404 페이지 추가로 SPA 폴백 해소. wrangler 설정 파일은 두지 않는다 (Pages 대시보드 관리)
