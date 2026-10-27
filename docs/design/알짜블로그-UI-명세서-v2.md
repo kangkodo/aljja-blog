@@ -50,10 +50,12 @@
 ## 1. 전체 동작 원칙
 
 - **MPA + SSG 유지**: 모든 페이지는 빌드 시 HTML로 생성, 이동은 전체 새로고침. 서버 로직·DB·로그인 없음.
+- **이동 속도**: 화면에 보이는 내부 링크는 Astro prefetch(`viewport`)로 미리 받아 둔다. 이동이 120ms를 넘으면 화면 위에 로고 파랑(`--brand`, `#0052ff`) 3px 로딩 바를 보여 준다 (`NavProgress.astro`, 검색 페이지의 Pagefind 첫 로딩에도 사용).
 - **JS는 최소한으로**:
   1. 헤더 검색 토글 (모든 페이지, 수십 줄 이내의 인라인 스크립트)
   2. 검색 페이지의 Pagefind 동적 로딩
-  3. Cloudflare Web Analytics 비콘 (토큰 설정 시)
+  3. 페이지 이동 로딩 바 + Astro prefetch
+  4. Cloudflare Web Analytics 비콘 (토큰 설정 시)
 - **링크 위주**: 이동은 모두 `<a>`. 버튼은 검색 토글 하나뿐.
 - **외부 링크 없음**: 새 창 링크 없음. 메일 주소는 `mailto:` 링크.
 - **움직임 줄이기 존중**: `prefers-reduced-motion: reduce`이면 검색창 애니메이션 없이 즉시 열고 닫는다.

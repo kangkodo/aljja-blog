@@ -1,0 +1,48 @@
+---
+// 페이지 이동 로딩 바: 로고의 파란 화살표 선이 화면 위쪽을 따라 뻗어 나간다.
+// 120ms 안에 끝나는 이동(미리 받아 둔 페이지)에서는 보이지 않는다. 새 페이지가 뜨면 자연히 사라진다.
+---
+
+<div id="nav-progress" aria-hidden="true"></div>
+
+<script>
+  const root = document.documentElement;
+
+  document.addEventListener('click', (e) => {
+    const a = (e.target as Element).closest('a');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (a.target || a.hasAttribute('download') || a.origin !== location.origin) return;
+    if (a.pathname === location.pathname && a.search === location.search) return; // 같은 페이지·# 이동
+    root.toggleAttribute('data-navigating', true);
+  });
+  document.addEventListener('submit', () => root.toggleAttribute('data-navigating', true));
+  // 뒤로 가기로 돌아온 페이지(bfcache)에는 바가 남아 있지 않게
+  addEventListener('pageshow', () => root.toggleAttribute('data-navigating', false));
+</script>
+
+<style is:global>
+  #nav-progress {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    height: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--color-brand);
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* 처음엔 빠르게, 끝에 가까울수록 느리게. 응답이 오기 전에 끝까지 차지 않는다. */
+  [data-navigating] #nav-progress {
+    opacity: 1;
+    transform: scaleX(0.9);
+    transition: opacity 0s 120ms, transform 10s cubic-bezier(0.05, 0.9, 0.1, 1) 120ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-navigating] #nav-progress {
+      transform: scaleX(1);
+      transition: opacity 0s 120ms;
+    }
+  }
+</style>

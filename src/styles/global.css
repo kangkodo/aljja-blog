@@ -18,6 +18,7 @@
   --color-surface: #f6f8f6;
   --color-surface-2: #f3f5f3;
   --color-ad-line: #c4ccc7;
+  --color-brand: #0052ff; /* 로고 화살표 파랑. 로딩 표시에만 쓴다. */
 
   --font-sans: "IBM Plex Sans KR", system-ui, sans-serif;
 

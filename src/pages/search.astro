@@ -39,11 +39,13 @@ import { SITE } from '../config';
       if (!query) return results.replaceChildren();
       if (!pagefind) {
         message('검색 중…');
+        document.documentElement.toggleAttribute('data-navigating', true); // 상단 로딩 바 (NavProgress)
         pagefind = await import('/pagefind/pagefind.js');
         await pagefind.init();
       }
       const found = await pagefind.search(query);
       const data = await Promise.all(found.results.slice(0, 10).map((r) => r.data()));
+      document.documentElement.toggleAttribute('data-navigating', false);
       if (input.value.trim() !== query) return; // 더 최근 입력이 있으면 버린다
       if (!data.length) return message('검색 결과가 없습니다.');
       const escaped = query.split(/\s+/).map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
