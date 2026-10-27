@@ -16,7 +16,7 @@
 - [x] UI 명세서 v2(`docs/design/알짜블로그-UI-명세서-v2.md`) 적용: 새 헤더·검색 토글·페이지 번호·푸터, 개인정보처리방침·404, OG 이미지
 - [x] 명세서 맨 앞 "개발 필수 체크리스트" 6개 항목 확인 완료
 - [x] GitHub 저장소 + Cloudflare Pages 자동 배포 연결 (소유자가 대시보드에서 설정)
-- [ ] 개인정보처리방침 `[ ]` 항목 채우기 + 법률 검토 (`src/pages/privacy.astro`)
+- [ ] 개인정보처리방침: 보호책임자 성명(`OWNER_NAME`) 입력, 문의 메일 전달 대상(Gmail 가정) 확인, 게시 전 검토 (`src/pages/privacy.astro`)
 - [ ] AI 카피 방어 문구·카나리아 문자열 입력 — 소유자가 careit.kr 패키지에서 제공
 - [ ] Cloudflare Web Analytics 토큰 입력
 - [ ] AdSense 승인 후 `ADS` 설정 입력 + `public/ads.txt` 추가
@@ -84,7 +84,7 @@ npm test         # 페이지 번호 생략 규칙 테스트
 
 1. AI 방어 HTML 문구 + 카나리아 문자열 (careit.kr 패키지에서 가져옴)
 2. Cloudflare Web Analytics 토큰
-3. 개인정보처리방침 빈칸 값 (시행일, 보유 기간, 분석 도구, 위탁, 책임자·연락처)
+3. 개인정보처리방침의 보호책임자 성명
 4. 나중에: AdSense 클라이언트·슬롯 ID, Search Console·서치어드바이저 소유 확인
 
 ## 결정 로그
