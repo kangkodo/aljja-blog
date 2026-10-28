@@ -16,7 +16,7 @@ export const CONTACT = {
 };
 
 // 헤더 카테고리 메뉴 순서. 글에 있는 카테고리 중 여기 없는 것은 뒤에 가나다순으로 붙는다.
-export const CATEGORY_ORDER = ['돈 계산기', '행정 서류'];
+export const CATEGORY_ORDER = ['세금', '일자리', '혜택', '쇼핑', '살림', '교통', '행정'];
 
 export const PAGE_SIZE = 10;
 

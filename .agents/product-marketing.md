@@ -1,6 +1,6 @@
 # Product Marketing Context — 알짜
 
-**Document version:** v1
+**Document version:** v2
 **Last updated:** 2026-10-28
 
 ## Product Overview (블로그 개요)
@@ -13,7 +13,7 @@
 - AdSense 승인 후: AdSense로 완전히 전환 (쿠팡 파트너스 중단)
 - AdSense "차단 관리"에서 질 낮은 광고(게임 등 일반 카테고리, 도박·데이트 등 민감 카테고리)를 차단한다
 
-**분야 7개** (확정. 사이트에는 아직 적용하지 않음 — 현재 사이트 카테고리는 `돈 계산기`, `행정 서류`)
+**분야 7개** (2026-10-28 사이트 적용. 순서는 `src/config.ts`의 `CATEGORY_ORDER`. 헤더 메뉴에는 글이 있는 분야만 보인다)
 
 | 분야 | 들어갈 글 |
 |---|---|
@@ -224,4 +224,5 @@ AI 답변은 경쟁 상대이면서 유입 경로이기도 하다. AI가 알짜 
 
 ## Changelog
 *Newest first. One line per revision: what changed and why.*
+- v2 (2026-10-28) — Product Overview: 분야 7개를 사이트에 적용 (기존 `돈 계산기`·`행정 서류` 대체, 기존 글 3개 이동).
 - v1 (2026-10-28) — Initial context.

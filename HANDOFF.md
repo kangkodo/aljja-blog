@@ -23,7 +23,7 @@
 - [ ] AdSense 승인 후 `ADS` 설정 입력 + `public/ads.txt` 추가
 - [x] 로고 이미지 적용 (`Logo.astro`, `src/lib/og.ts`, `public/brand`·`icons`·`social`, `favicon.ico`, `apple-touch-icon.png`)
 - [x] 블로그 기준 문서(`.agents/product-marketing.md`)와 글쓰기 스킬(`.agents/skills/write-post/`) 작성
-- [ ] 분야 7개(세금·일자리·혜택·쇼핑·살림·교통·행정) 사이트 적용 — 확정됐지만 소유자 지시 전까지 보류. 적용 시 `CATEGORY_ORDER`와 기존 글 3개 category 변경
+- [x] 분야 7개(세금·일자리·혜택·쇼핑·살림·교통·행정) 사이트 적용 (2026-10-28). 기존 글: 쿠팡 알바 → 일자리, 연말정산 → 세금, 전입신고 → 행정
 - [ ] 기존 글 3개에 기준일·출처 추가, 숫자 재확인 (write-post 7번 절차). 전입신고 글의 대항력·우선변제권 문장은 법률 해석 금지 규칙에 걸치는지 점검
 - [ ] Google Search Console 등록·사이트맵 제출 — 하루 방문자 목표 때문에 가능한 빨리 (소유자)
 
@@ -105,4 +105,5 @@ npm test         # 페이지 번호 생략 규칙 테스트
 - 2026-10-27: llms.txt는 `scripts/` 대신 Astro 엔드포인트(`src/pages/llms.txt.ts`)로 생성 (글 스키마를 그대로 사용)
 - 2026-10-27: 404 페이지 추가로 SPA 폴백 해소. wrangler 설정 파일은 두지 않는다 (Pages 대시보드 관리)
 - 2026-10-28: 블로그 기준 문서·글쓰기 스킬 도입. 다루지 않는 주제(법률 해석·건강/의료·투자 권유·중국 관련), 웹 리서치 필수, 출처 표기, 체험담·AI 작성 언급 금지는 `.agents/product-marketing.md`와 write-post 스킬에 기록
+- 2026-10-28: 분야를 `돈 계산기`·`행정 서류`에서 7개로 교체. 예전 분야 주소(`/category/돈 계산기/` 등)는 리다이렉트 없이 404 (Search Console 등록 전이라 색인됐을 가능성이 낮음)
 - 2026-10-28: 쿠팡 파트너스 링크는 마크다운 안에 HTML `<a rel="sponsored nofollow">`로 쓴다 (Sätteri가 raw HTML을 그대로 출력하는 것 확인)
