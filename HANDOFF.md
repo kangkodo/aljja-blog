@@ -9,7 +9,8 @@
 - **이름**: 알짜
 - **도메인**: https://aljjatip.com (Cloudflare Registrar에서 구매 완료)
 - **목적**: 생활·돈·행정 분야 롱테일 질문형 검색 유입 정보 블로그
-- **수익 모델**: Google AdSense (글 20~30개 쌓인 뒤 승인 신청)
+- **수익 모델**: 광고만. AdSense 승인 전 쿠팡 파트너스 → 승인 후 AdSense로 완전히 전환 (글 10개쯤부터 신청 검토)
+- **목표**: 매일 글 1개, 2026-11-28까지 하루 방문자 100명 (상세는 `.agents/product-marketing.md`)
 
 ## 현재 상태 (2026-10-27 기준)
 
@@ -21,6 +22,10 @@
 - [ ] Cloudflare Web Analytics 토큰 입력
 - [ ] AdSense 승인 후 `ADS` 설정 입력 + `public/ads.txt` 추가
 - [x] 로고 이미지 적용 (`Logo.astro`, `src/lib/og.ts`, `public/brand`·`icons`·`social`, `favicon.ico`, `apple-touch-icon.png`)
+- [x] 블로그 기준 문서(`.agents/product-marketing.md`)와 글쓰기 스킬(`.agents/skills/write-post/`) 작성
+- [ ] 분야 7개(세금·일자리·혜택·쇼핑·살림·교통·행정) 사이트 적용 — 확정됐지만 소유자 지시 전까지 보류. 적용 시 `CATEGORY_ORDER`와 기존 글 3개 category 변경
+- [ ] 기존 글 3개에 기준일·출처 추가, 숫자 재확인 (write-post 7번 절차). 전입신고 글의 대항력·우선변제권 문장은 법률 해석 금지 규칙에 걸치는지 점검
+- [ ] Google Search Console 등록·사이트맵 제출 — 하루 방문자 목표 때문에 가능한 빨리 (소유자)
 
 ## 기술 스택
 
@@ -33,7 +38,7 @@
 
 ## 명령어
 
-Node 22.23.4 이상 필요 (Astro 요구사항).
+Node 22.23.4 이상 필요 (Astro 요구사항). 소유자 맥의 기본 `node`(`~/.local/bin/node`, v22.23.1)로는 빌드가 실패한다. `PATH=/opt/homebrew/bin:$PATH npm run build`처럼 Homebrew Node를 쓴다.
 
 ```bash
 npm install
@@ -67,11 +72,15 @@ npm test         # 페이지 번호 생략 규칙 테스트
 | `public/robots.txt` | AI 크롤러 선별 차단 규칙 (학습용 차단 / 온디맨드 허용) |
 | `docs/design/` | 디자인 시안 원본 + UI 명세서 v2 (구현 기준) |
 | `docs/설계서.md` | 초기 설계 스펙 (라우트·스키마·SEO/GEO/AEO) |
+| `.agents/product-marketing.md` | 블로그 방향·독자·말투·다루지 않는 주제 (마케팅 스킬이 읽는 기준 문서) |
+| `.agents/skills/write-post/SKILL.md` | 글 작성·갱신·발행 절차. 글을 쓰는 에이전트는 반드시 따른다 (`AGENTS.md`에 안내) |
 
 ## 역할 분담 (2026-10-27 변경)
 
 - 개발 (코드·디자인 적용·설정): Claude가 담당. 개발 변경의 푸시는 소유자 경로로 별도 해결 (Muse의 PAT 공유 불가).
-- 글 발행 (주제 받으면 글 작성·푸시·배포): Muse가 담당 (별도 PAT 보유).
+- 글쓰기 에이전트용 기반·도구 (`.agents/product-marketing.md`, `.agents/skills/write-post/`, `AGENTS.md` 안내): Claude가 이 저장소에서 구축·관리 (2026-10-28 추가).
+- 글 발행 (주제 받으면 글 작성·푸시·배포): Muse가 담당 (별도 PAT 보유). 글쓰기 에이전트는 바뀔 수 있으며, 어떤 에이전트든 `AGENTS.md` → write-post 스킬 순서로 읽고 따른다. Muse 지시문에 "작업 전 `AGENTS.md`를 읽을 것"을 넣어 둔다.
+- 마케팅 스킬 17개(coreyhaines31/marketingskills)는 소유자 맥의 `.claude/skills/`에만 설치돼 있다 (git 제외). 다른 환경에서 필요하면 `npx skills add coreyhaines31/marketingskills --skill <이름> -a <에이전트>`로 설치. write-post 스킬은 AI 말버릇 제거에 그중 copy-editing을 쓴다.
 - 소유자 직접 처리: Cloudflare 대시보드 조작, 도메인·이메일 설정, 각종 값 제공.
 
 ## 배포
@@ -95,3 +104,5 @@ npm test         # 페이지 번호 생략 규칙 테스트
 - 2026-10-27: UI 명세서 v2 적용. 목차·Giscus 댓글 제거, privacy@는 사이트에 노출하지 않음
 - 2026-10-27: llms.txt는 `scripts/` 대신 Astro 엔드포인트(`src/pages/llms.txt.ts`)로 생성 (글 스키마를 그대로 사용)
 - 2026-10-27: 404 페이지 추가로 SPA 폴백 해소. wrangler 설정 파일은 두지 않는다 (Pages 대시보드 관리)
+- 2026-10-28: 블로그 기준 문서·글쓰기 스킬 도입. 다루지 않는 주제(법률 해석·건강/의료·투자 권유·중국 관련), 웹 리서치 필수, 출처 표기, 체험담·AI 작성 언급 금지는 `.agents/product-marketing.md`와 write-post 스킬에 기록
+- 2026-10-28: 쿠팡 파트너스 링크는 마크다운 안에 HTML `<a rel="sponsored nofollow">`로 쓴다 (Sätteri가 raw HTML을 그대로 출력하는 것 확인)

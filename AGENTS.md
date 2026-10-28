@@ -1,3 +1,7 @@
+## Writing posts
+
+Before creating or editing anything in `src/content/posts/`, read and follow `.agents/skills/write-post/SKILL.md`. Blog positioning, audience, voice, and off-limits topics are in `.agents/product-marketing.md`.
+
 ## Development
 
 When starting the dev server, use background mode:
