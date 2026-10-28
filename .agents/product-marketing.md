@@ -1,6 +1,6 @@
 # Product Marketing Context — 알짜
 
-**Document version:** v2
+**Document version:** v3
 **Last updated:** 2026-10-28
 
 ## Product Overview (블로그 개요)
@@ -214,7 +214,7 @@ AI 답변은 경쟁 상대이면서 유입 경로이기도 하다. AI가 알짜 
 **Targets:**
 - 매일 글 1개 발행
 - 2026-11-28(1개월 뒤)까지 하루 방문자 100명
-**Current metrics (2026-10-28):** 글 3개. 분석 도구(Cloudflare Web Analytics) 미설정.
+**Current metrics (2026-10-28):** 발행 글 0개 (테스트 글 3개 삭제). 분석 도구(Cloudflare Web Analytics) 미설정.
 
 ## Learnings
 *Decisions and tested lessons. Newest first. Keep it to about 20 active entries.*
@@ -224,5 +224,6 @@ AI 답변은 경쟁 상대이면서 유입 경로이기도 하다. AI가 알짜 
 
 ## Changelog
 *Newest first. One line per revision: what changed and why.*
+- v3 (2026-10-28) — Goals: 테스트 글 3개 삭제로 현재 지표를 글 0개로 갱신. Brand Voice 예문은 삭제된 글에서 뽑은 것이지만 말투 기준으로 그대로 둠.
 - v2 (2026-10-28) — Product Overview: 분야 7개를 사이트에 적용 (기존 `돈 계산기`·`행정 서류` 대체, 기존 글 3개 이동).
 - v1 (2026-10-28) — Initial context.

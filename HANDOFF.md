@@ -24,7 +24,7 @@
 - [x] 로고 이미지 적용 (`Logo.astro`, `src/lib/og.ts`, `public/brand`·`icons`·`social`, `favicon.ico`, `apple-touch-icon.png`)
 - [x] 블로그 기준 문서(`.agents/product-marketing.md`)와 글쓰기 스킬(`.agents/skills/write-post/`) 작성
 - [x] 분야 7개(세금·일자리·혜택·쇼핑·살림·교통·행정) 사이트 적용 (2026-10-28). 기존 글: 쿠팡 알바 → 일자리, 연말정산 → 세금, 전입신고 → 행정
-- [ ] 기존 글 3개에 기준일·출처 추가, 숫자 재확인 (write-post 7번 절차). 전입신고 글의 대항력·우선변제권 문장은 법률 해석 금지 규칙에 걸치는지 점검
+- [x] 테스트용이던 기존 글 3개(쿠팡 알바, 전입신고, 연말정산 미리보기) 삭제 (2026-10-28). 글 폴더는 `.gitkeep`으로 유지
 - [ ] Google Search Console 등록·사이트맵 제출 — 하루 방문자 목표 때문에 가능한 빨리 (소유자)
 
 ## 기술 스택
