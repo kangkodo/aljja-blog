@@ -17,3 +17,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://aljjatip.com/sitemap-index.xml
+
+#DaumWebMasterTool:cf58e14856f24110e02416f36f4a70fcdb85710ed1f387b596b9140ed52c060d:7v7Co2KibzUex4fH7zWmNA==

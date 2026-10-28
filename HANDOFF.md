@@ -25,7 +25,8 @@
 - [x] 블로그 기준 문서(`.agents/product-marketing.md`)와 글쓰기 스킬(`.agents/skills/write-post/`) 작성
 - [x] 분야 7개(세금·일자리·혜택·쇼핑·살림·교통·행정) 사이트 적용 (2026-10-28). 기존 글: 쿠팡 알바 → 일자리, 연말정산 → 세금, 전입신고 → 행정
 - [x] 테스트용이던 기존 글 3개(쿠팡 알바, 전입신고, 연말정산 미리보기) 삭제 (2026-10-28). 글 폴더는 `.gitkeep`으로 유지
-- [ ] Google Search Console 등록·사이트맵 제출 — 하루 방문자 목표 때문에 가능한 빨리 (소유자)
+- [x] Google Search Console 등록(도메인 속성, Cloudflare DNS로 소유 확인)·사이트맵 제출 (2026-10-28)
+- [x] 네이버 서치어드바이저(`BaseHead.astro`의 `naver-site-verification` 메타 태그)·Daum 웹마스터도구(`public/robots.txt` 맨 끝 `#DaumWebMasterTool` 줄) 등록 (2026-10-28). 두 줄은 지우면 소유 확인이 풀린다
 
 ## 기술 스택
 
