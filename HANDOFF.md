@@ -26,7 +26,8 @@
 - [x] 분야 7개(세금·일자리·혜택·쇼핑·살림·교통·행정) 사이트 적용 (2026-10-28). 기존 글: 쿠팡 알바 → 일자리, 연말정산 → 세금, 전입신고 → 행정
 - [x] 테스트용이던 기존 글 3개(쿠팡 알바, 전입신고, 연말정산 미리보기) 삭제 (2026-10-28). 글 폴더는 `.gitkeep`으로 유지
 - [x] Google Search Console 등록(도메인 속성, Cloudflare DNS로 소유 확인)·사이트맵 제출 (2026-10-28)
-- [x] 네이버 서치어드바이저(`BaseHead.astro`의 `naver-site-verification` 메타 태그)·Daum 웹마스터도구(`public/robots.txt` 맨 끝 `#DaumWebMasterTool` 줄) 등록 (2026-10-28). 두 줄은 지우면 소유 확인이 풀린다
+- [x] 네이버 서치어드바이저(`BaseHead.astro`의 `naver-site-verification` 메타 태그)·Daum 웹마스터도구(`public/robots.txt` 맨 끝 `#DaumWebMasterTool` 줄) 등록 (2026-10-28). 두 줄은 지우면 소유 확인이 풀린다. 사이트맵은 Google·네이버·Daum 모두 제출, RSS는 Daum만 제출
+- [ ] 네이버 RSS 제출 (`https://aljjatip.com/rss.xml`): 글이 0개라 RSS가 비어 있어 "시스템 오류"로 실패. 첫 글 발행 후 서치어드바이저 → 요청 → RSS 제출에서 다시 (보안 문자는 소유자 입력)
 
 ## 기술 스택
 
