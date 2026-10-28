@@ -17,7 +17,7 @@
 - [x] UI 명세서 v2(`docs/design/알짜블로그-UI-명세서-v2.md`) 적용: 새 헤더·검색 토글·페이지 번호·푸터, 개인정보처리방침·404, OG 이미지
 - [x] 명세서 맨 앞 "개발 필수 체크리스트" 6개 항목 확인 완료
 - [x] GitHub 저장소 + Cloudflare Pages 자동 배포 연결 (소유자가 대시보드에서 설정)
-- [ ] 개인정보처리방침: 문의 메일 전달 대상(Gmail 가정) 확인, 게시 전 검토 (`src/pages/privacy.astro`)
+- [x] 개인정보처리방침: 문의 메일(contact@·support@)이 소유자 Gmail로 전달되는 것 확인, 법령 대조 검토 후 정정 (2026-10-28). 전달된 메일이 Gmail 스팸함으로 가서 소유자가 Gmail 필터로 처리
 - [ ] AI 카피 방어 문구·카나리아 문자열 입력 — 소유자가 careit.kr 패키지에서 제공
 - [ ] Cloudflare Web Analytics 토큰 입력
 - [ ] AdSense 승인 후 `ADS` 설정 입력 + `public/ads.txt` 추가
