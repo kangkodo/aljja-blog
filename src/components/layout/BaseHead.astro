@@ -2,6 +2,9 @@
 // <head>: SEO 메타, OG, JSON-LD, 폰트, 분석 비콘, 광고 스크립트
 import { SITE, ADS, CF_ANALYTICS_TOKEN } from '../../config';
 import { adsOn } from '../../lib/ads';
+// IBM Plex Sans KR 400·700만 (UI 명세 2.2). Google Fonts 대신 직접 제공해 독자 IP가 Google로 가지 않게 한다.
+import '@fontsource/ibm-plex-sans-kr/400.css';
+import '@fontsource/ibm-plex-sans-kr/700.css';
 
 export interface Props {
   title: string;
@@ -44,11 +47,6 @@ const imageUrl = new URL(ogImage, SITE.url).href;
 <meta name="twitter:title" content={pageTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageUrl} />
-
-<!-- IBM Plex Sans KR 400·700만 (UI 명세 2.2) -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
 
 {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 {CF_ANALYTICS_TOKEN && (

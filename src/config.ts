@@ -21,6 +21,7 @@ export const CATEGORY_ORDER = ['세금', '일자리', '혜택', '쇼핑', '살�
 export const PAGE_SIZE = 10;
 
 // AdSense: 승인 전에는 enabled=false. 꺼져 있으면 광고 마크업·스크립트를 출력하지 않는다.
+// 켜면 개인정보처리방침 내용이 바뀌므로, 7일 전에 src/pages/privacy.astro의 변경 공지·EFFECTIVE_DATE부터 고친다.
 export const ADS = {
   enabled: false,
   client: '', // ca-pub-XXXXXXXXXXXXXXXX
@@ -30,7 +31,7 @@ export const ADS = {
   },
 };
 
-// Cloudflare Web Analytics 토큰
+// Cloudflare Web Analytics 토큰. 넣으면 개인정보처리방침에 방문 통계 항목이 생기므로 privacy.astro의 EFFECTIVE_DATE·변경 이력도 함께 고친다.
 export const CF_ANALYTICS_TOKEN = '';
 
 // AI 카피 방어 문구 / 카나리아 문자열: careit.kr 패키지에서 가져올 것
