@@ -73,6 +73,7 @@ npm test         # 페이지 번호 생략 규칙 테스트
 | `docs/design/` | 디자인 시안 원본 + UI 명세서 v2 (구현 기준) |
 | `docs/설계서.md` | 초기 설계 스펙 (라우트·스키마·SEO/GEO/AEO) |
 | `.agents/product-marketing.md` | 블로그 방향·독자·말투·다루지 않는 주제 (마케팅 스킬이 읽는 기준 문서) |
+| `.agents/topic-backlog.md` | 다음에 쓸 주제 목록 (발행 목표일·분야·검색어·상태). 글을 발행하면 상태를 갱신 |
 | `.agents/skills/write-post/SKILL.md` | 글 작성·갱신·발행 절차. 글을 쓰는 에이전트는 반드시 따른다 (`AGENTS.md`에 안내) |
 
 ## 역할 분담 (2026-10-27 변경)
