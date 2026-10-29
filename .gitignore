@@ -26,3 +26,6 @@ pnpm-debug.log*
 # local tooling
 .claude/
 skills-lock.json
+
+# 글 자료 묶음 (저장소가 공개라 로컬에만 둔다)
+.agents/research/
