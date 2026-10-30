@@ -53,14 +53,14 @@ draft: true
 `;
 }
 
-/** 상태가 대기인 주제 중 발행 목표일이 가장 이른 것 */
+/** 상태가 우선인 주제부터, 그다음 대기인 주제에서 발행 목표일이 가장 이른 것 */
 export function nextTopic(backlog: string): Topic | undefined {
   const rows = backlog
     .split('\n')
     .filter((line) => /^\| \d+ \| \d\d-\d\d \|/.test(line))
     .map((line) => line.split('|').map((cell) => cell.trim()))
-    .filter((cells) => cells[10] === '대기')
-    .sort((a, b) => a[2].localeCompare(b[2]));
+    .filter((cells) => cells[10] === '우선' || cells[10] === '대기')
+    .sort((a, b) => (a[10] === b[10] ? a[2].localeCompare(b[2]) : a[10] === '우선' ? -1 : 1));
   const row = rows[0];
   return row && { no: row[1], target: row[2], title: row[3], category: row[4], keywords: row[6] };
 }

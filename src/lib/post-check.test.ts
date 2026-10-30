@@ -134,6 +134,8 @@ test('다음 주제는 대기 중 가장 이른 날짜', () => {
 | 4 | 10-30 | 넷째 | 교통 | 4 | 검색어4 | 이유 | | 8 | 발행 (b) |`;
   assert.deepEqual(nextTopic(backlog), { no: '3', target: '10-31', title: '셋째', category: '일자리', keywords: '검색어3' });
   assert.equal(nextTopic('없음'), undefined);
+  const priority = `${backlog}\n| 5 | 11-20 | 다섯째 | 쇼핑 | 3 | 검색어5 | 이유 | | - | 우선 |`;
+  assert.equal(nextTopic(priority)?.no, '5');
 });
 
 test('파일명 규칙', () => {
