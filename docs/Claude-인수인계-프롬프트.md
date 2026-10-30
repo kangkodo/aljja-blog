@@ -54,7 +54,7 @@
 
 ## SEO / GEO
 
-- robots.txt: AI 학습용 크롤러(GPTBot, CCBot, ClaudeBot, Google-Extended, PerplexityBot, Bytespider, meta-externalagent, Applebot-Extended) 차단, 온디맨드 봇(ChatGPT-User, OAI-SearchBot, Claude-User) 허용. Sitemap 주소는 `sitemap-index.xml`.
+- robots.txt: AI 학습용 크롤러(GPTBot, CCBot, ClaudeBot, Bytespider, meta-externalagent, Applebot-Extended) 차단, 검색·답변용 봇(ChatGPT-User, OAI-SearchBot, Claude-User, Claude-SearchBot, PerplexityBot, Perplexity-User, Google-Extended) 허용, 모두에게 `Content-Signal: ai-train=no` 표시. Sitemap 주소는 `sitemap-index.xml`.
 - llms.txt: 빌드 시 자동 생성 (카테고리별 글 목록).
 - JSON-LD: Article 필수, FAQPage는 FAQ 있을 때만.
 

@@ -36,10 +36,11 @@ faq:
 - 한국경제, [기사](https://www.example.com/b) (2025-10-09 보도, 2026-10-29 확인)
 `;
 
-const errors = (text: string, slug = 'minimum-wage') => checkPost(slug, text).errors;
+const check = (slug: string, text: string) => checkPost(slug, text, '2026-10-31');
+const errors = (text: string, slug = 'minimum-wage') => check(slug, text).errors;
 
 test('잘 쓴 글은 오류가 없다', () => {
-  assert.deepEqual(checkPost('minimum-wage', GOOD), { errors: [], warnings: [] });
+  assert.deepEqual(check('minimum-wage', GOOD), { errors: [], warnings: [] });
 });
 
 test('새 초안은 스키마 값을 채우되 TODO로 막힌다', () => {
@@ -56,13 +57,13 @@ test('frontmatter와 파일명', () => {
   assert.ok(errors(GOOD.replace(/^summary:.*\n/m, ''))[0].includes('summary'));
   assert.ok(errors(GOOD.replace(/  - q: "질문 3"\n.*\n/, ''))[0].includes('faq가 2개'));
   assert.ok(errors(GOOD, 'Minimum_Wage')[0].includes('파일명'));
-  assert.match(checkPost('minimum-wage-2027', GOOD).warnings[0], /연도/);
+  assert.match(check('minimum-wage-2027', GOOD).warnings[0], /연도/);
 });
 
 test('description 길이', () => {
   const long = GOOD.replace(/^description:.*$/m, `description: "${'가'.repeat(201)}"`);
   assert.ok(errors(long)[0].includes('201자'));
-  const short = checkPost('minimum-wage', GOOD.replace(/^description:.*$/m, 'description: "짧은 설명"'));
+  const short = check('minimum-wage', GOOD.replace(/^description:.*$/m, 'description: "짧은 설명"'));
   assert.deepEqual(short.errors, []);
   assert.match(short.warnings[0], /권장/);
 });
@@ -84,23 +85,30 @@ test('출처', () => {
   ]);
 });
 
+test('오래된 출처 확인일은 경고', () => {
+  assert.deepEqual(checkPost('minimum-wage', GOOD, '2026-11-05').warnings, []);
+  const warnings = checkPost('minimum-wage', GOOD, '2026-11-06').warnings;
+  assert.equal(warnings.length, 3);
+  assert.match(warnings[0], /7일/);
+});
+
 test('말투와 금지 표현', () => {
   const add = (line: string) => GOOD.replace('## 둘째 소제목', `${line}\n\n## 둘째 소제목`);
   assert.ok(errors(add('역대급 혜택입니다.'))[0].includes('역대급'));
   assert.ok(errors(add('오늘은 최저임금에 대해 알아보겠습니다.'))[0].includes('서론'));
   assert.ok(errors(add('이 글은 AI가 작성했습니다.'))[0].includes('AI'));
-  assert.match(checkPost('minimum-wage', add('직접 가 보니 좋습니다.')).warnings[0], /체험담/);
-  assert.match(checkPost('minimum-wage', add('테무 할인입니다.')).warnings[0], /다루지 않는/);
-  assert.match(checkPost('minimum-wage', add('시급이 올라요.')).warnings[0], /어미/);
-  assert.match(checkPost('minimum-wage', GOOD.replace('"답이에요."', '"답입니다."')).warnings[0], /faq/);
+  assert.match(check('minimum-wage', add('직접 가 보니 좋습니다.')).warnings[0], /체험담/);
+  assert.match(check('minimum-wage', add('테무 할인입니다.')).warnings[0], /다루지 않는/);
+  assert.match(check('minimum-wage', add('시급이 올라요.')).warnings[0], /어미/);
+  assert.match(check('minimum-wage', GOOD.replace('"답이에요."', '"답입니다."')).warnings[0], /faq/);
   assert.deepEqual(errors(GOOD.replace('`주휴수당', '`역대급 주휴수당')), []);
 });
 
 test('넓은 표는 경고', () => {
   const table = (columns: number) => `| ${'칸 | '.repeat(columns)}\n|${'---|'.repeat(columns)}\n`;
   const add = (columns: number) => GOOD.replace('## 둘째 소제목', `${table(columns)}\n## 둘째 소제목`);
-  assert.deepEqual(checkPost('minimum-wage', add(5)).warnings, []);
-  assert.match(checkPost('minimum-wage', add(6)).warnings[0], /6열/);
+  assert.deepEqual(check('minimum-wage', add(5)).warnings, []);
+  assert.match(check('minimum-wage', add(6)).warnings[0], /6열/);
 });
 
 test('굵게 깨짐', () => {

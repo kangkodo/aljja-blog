@@ -9,6 +9,7 @@ const AI_MENTION = ['AI가 작성', 'AI가 쓴', 'AI로 작성', 'ChatGPT로 작
 const FAKE_EXPERIENCE = ['직접 가 보니', '직접 가보니', '써 보니', '써보니', '제가 해 보니', '제가 해보니'];
 const CHINA = ['알리익스프레스', '테무', '중국'];
 const BAD_SOURCES = ['namu.wiki', 'tistory.com', 'blog.naver.com', 'velog.io', 'brunch.co.kr'];
+const SOURCE_MAX_DAYS = 7;
 const COUPANG_NOTICE = '이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.';
 
 /** Asia/Seoul 기준 YYYY-MM-DD */
@@ -75,7 +76,7 @@ function field(frontmatter: string, key: string): string {
   return frontmatter.match(new RegExp(`^${key}:[ \\t]*"?(.*?)"?[ \\t]*$`, 'm'))?.[1] ?? '';
 }
 
-export function checkPost(slug: string, text: string): Report {
+export function checkPost(slug: string, text: string, now = today()): Report {
   const errors: string[] = [];
   const warnings: string[] = [];
   const parts = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -116,6 +117,10 @@ export function checkPost(slug: string, text: string): Report {
   for (const line of sources) {
     if (!/\]\(https?:\/\//.test(line)) errors.push(`출처에 링크가 없습니다: ${line.slice(0, 40)}`);
     if (!/\d{4}-\d{2}-\d{2}[^)]*확인\)\s*$/.test(line)) errors.push(`출처에 확인 날짜가 없습니다: ${line.slice(0, 40)}`);
+    const checked = line.match(/(\d{4}-\d{2}-\d{2}) 확인\)\s*$/)?.[1];
+    if (checked && (Date.parse(now) - Date.parse(checked)) / 86_400_000 > SOURCE_MAX_DAYS) {
+      warnings.push(`출처 확인일이 ${SOURCE_MAX_DAYS}일 넘었습니다. 다시 확인합니다: ${checked}`);
+    }
     const bad = BAD_SOURCES.find((domain) => line.includes(domain));
     if (bad) errors.push(`출처로 쓸 수 없는 곳입니다: ${bad}`);
   }

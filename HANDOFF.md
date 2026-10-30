@@ -27,7 +27,7 @@
 - [x] 테스트용이던 기존 글 3개(쿠팡 알바, 전입신고, 연말정산 미리보기) 삭제 (2026-10-28). 글 폴더는 `.gitkeep`으로 유지
 - [x] Google Search Console 등록(도메인 속성, Cloudflare DNS로 소유 확인)·사이트맵 제출 (2026-10-28)
 - [x] 네이버 서치어드바이저(`BaseHead.astro`의 `naver-site-verification` 메타 태그)·Daum 웹마스터도구(`public/robots.txt` 맨 끝 `#DaumWebMasterTool` 줄) 등록 (2026-10-28). 두 줄은 지우면 소유 확인이 풀린다. 사이트맵은 Google·네이버·Daum 모두 제출, RSS는 Daum만 제출
-- [ ] 네이버 RSS 제출 (`https://aljjatip.com/rss.xml`): 글이 0개라 RSS가 비어 있어 "시스템 오류"로 실패. 첫 글 발행 후 서치어드바이저 → 요청 → RSS 제출에서 다시 (보안 문자는 소유자 입력)
+- [x] 네이버 RSS 제출 (`https://aljjatip.com/rss.xml`) (2026-10-31, 소유자 처리)
 
 ## 기술 스택
 
@@ -73,7 +73,7 @@ npm run post     # 글 도구: next(다음 주제), new(초안), check(발행 �
 | `src/components/post/` | `PostHeader`, `Faq`, `PostFooter` |
 | `src/components/` | `Logo`(로고 이미지), `Icon` |
 | `src/pages/` | 홈(`[...page]`), 글, 카테고리, 태그, 검색, 소개, 개인정보처리방침, 404, RSS, `llms.txt`, 글별 OG 이미지(`og/[slug].png`) |
-| `public/robots.txt` | AI 크롤러 선별 차단 규칙 (학습용 차단 / 온디맨드 허용) |
+| `public/robots.txt` | AI 크롤러 선별 규칙 (학습용 차단 / 검색·답변용 허용 / `ai-train=no` 표시). robots.txt는 자율 준수이며 강제 차단은 Cloudflare AI Crawl Control에서 한다. Google-Extended는 Gemini 그라운딩을 위해 열었고, 이 토큰은 Gemini 학습도 함께 제어한다 |
 | `docs/design/` | 디자인 시안 원본 + UI 명세서 v2 (구현 기준) |
 | `docs/설계서.md` | 초기 설계 스펙 (라우트·스키마·SEO/GEO/AEO) |
 | `.agents/product-marketing.md` | 블로그 방향·독자·말투·다루지 않는 주제 (마케팅 스킬이 읽는 기준 문서) |
