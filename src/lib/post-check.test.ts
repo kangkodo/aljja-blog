@@ -96,6 +96,13 @@ test('말투와 금지 표현', () => {
   assert.deepEqual(errors(GOOD.replace('`주휴수당', '`역대급 주휴수당')), []);
 });
 
+test('넓은 표는 경고', () => {
+  const table = (columns: number) => `| ${'칸 | '.repeat(columns)}\n|${'---|'.repeat(columns)}\n`;
+  const add = (columns: number) => GOOD.replace('## 둘째 소제목', `${table(columns)}\n## 둘째 소제목`);
+  assert.deepEqual(checkPost('minimum-wage', add(5)).warnings, []);
+  assert.match(checkPost('minimum-wage', add(6)).warnings[0], /6열/);
+});
+
 test('굵게 깨짐', () => {
   const broken = GOOD.replace('**10,700원**입니다', '**11월 19일(목)**이고');
   assert.ok(errors(broken)[0].includes('굵게'));

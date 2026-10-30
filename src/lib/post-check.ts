@@ -130,6 +130,9 @@ export function checkPost(slug: string, text: string): Report {
   if (/\*\*[^*\n]*[)\]"'%”’」』]\*\*[가-힣]/.test(prose)) {
     errors.push('닫는 ** 앞이 문장부호이고 뒤가 한글이라 굵게가 깨집니다.');
   }
+  const widest = Math.max(0, ...[...prose.matchAll(/^\|(?:\s*:?-+:?\s*\|)+$/gm)].map((m) => m[0].split('|').length - 2));
+  if (widest > 5) warnings.push(`표가 ${widest}열입니다. 휴대폰에서는 5열 이하가 읽기 쉽습니다.`);
+
   const friendly = prose.match(/[가-힣]+(?<![세필중])요\./g); // 확인하세요, 필요, 중요는 빼고 본다
   if (friendly) warnings.push(`본문 어미가 섞였는지 확인: ${[...new Set(friendly)].join(', ')}`);
 

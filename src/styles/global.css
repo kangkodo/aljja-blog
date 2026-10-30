@@ -87,7 +87,8 @@
   & ul { @apply list-disc; }
   & ol { @apply list-decimal; }
   & li { @apply mb-1.5; }
-  & table { @apply mt-1.5 mb-5 w-full border-collapse t-body-sm break-keep sm:mt-2 sm:mb-6; }
+  & .table-scroll { @apply mt-1.5 mb-5 overflow-x-auto sm:mt-2 sm:mb-6; }
+  & table { @apply w-full border-collapse t-body-sm break-keep; }
   & th { @apply border-t border-b border-t-ink border-b-table-line bg-surface-2 p-2.5 text-left font-bold sm:px-3.5 sm:py-3; }
   & td { @apply border-b border-border p-2.5 align-top sm:px-3.5 sm:py-3; }
   & blockquote { @apply my-5 border-l-3 border-accent py-0.5 pl-4 text-text-2 sm:my-6 sm:py-1 sm:pl-5; }

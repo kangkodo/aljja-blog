@@ -3,7 +3,7 @@
 export const SITE = {
   name: '알짜',
   url: 'https://aljjatip.com',
-  description: '알아두면 쓸모있는 정보',
+  description: '세금, 일자리, 혜택, 쇼핑, 살림, 교통, 행정까지 생활 속 돈과 절차를 공식 출처로 확인해 숫자와 표로 정리합니다.',
   tagline: '알아두면 쓸모있는 정보',
   author: 'DY',
 };
