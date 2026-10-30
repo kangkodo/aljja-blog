@@ -47,7 +47,8 @@ npm install
 npm run dev      # 개발 서버
 npm run build    # astro build → postbuild(Pagefind 인덱싱)
 npm run preview  # 빌드 결과 미리보기
-npm test         # 페이지 번호 생략 규칙 테스트
+npm test         # 페이지 번호·글 검사 규칙 테스트
+npm run post     # 글 도구: next(다음 주제), new(초안), check(발행 전 검사)
 ```
 
 ## 파일 지도
@@ -57,6 +58,7 @@ npm test         # 페이지 번호 생략 규칙 테스트
 | `src/config.ts` | 사이트명·연락처·카테고리 순서·광고·분석 토큰·AI 방어 문구 — **설정은 전부 여기** |
 | `src/content/posts/*.md` | 글 (마크다운 + frontmatter). 1파일 = 1글, 파일명이 주소 |
 | `src/content.config.ts` | frontmatter 스키마 (필수값 누락 시 빌드 에러) |
+| `scripts/post.ts`, `src/lib/post-check.ts` | 글 도구. write-post 체크리스트 중 코드로 가릴 수 있는 것을 검사 |
 | `src/styles/global.css` | 디자인 토큰(색·폰트·브레이크포인트), 타이포 8종(`t-display` … `t-label`), 본문 `.prose` |
 | `src/lib/posts.ts` | 글 조회(발행일 내림차순)·카테고리 목록·URL·날짜 형식 — 페이지는 이것만 쓴다 |
 | `src/lib/pagination.ts` | 페이지 번호 생략 규칙 (+ `pagination.test.ts`) |
