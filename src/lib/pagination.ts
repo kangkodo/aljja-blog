@@ -9,4 +9,4 @@ export function pageItems(cur: number, total: number, mobile = false): number[] 
   return mobile ? [1, 0, cur, 0, total] : [1, 0, cur - 1, cur, cur + 1, 0, total];
 }
 
-export const pageHref = (n: number) => (n === 1 ? '/' : `/${n}/`);
+export const pageHref = (n: number, base = '/') => (n === 1 ? base : `${base}${n}/`);

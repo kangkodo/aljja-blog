@@ -1,7 +1,7 @@
 // npm test
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pageItems } from './pagination.ts';
+import { pageHref, pageItems } from './pagination.ts';
 
 test('데스크톱 7칸', () => {
   assert.deepEqual(pageItems(1, 1), [1]);
@@ -16,4 +16,11 @@ test('모바일 6칸', () => {
   assert.deepEqual(pageItems(3, 12, true), [1, 2, 3, 4, 0, 12]);
   assert.deepEqual(pageItems(6, 12, true), [1, 0, 6, 0, 12]);
   assert.deepEqual(pageItems(10, 12, true), [1, 0, 9, 10, 11, 12]);
+});
+
+test('페이지 주소', () => {
+  assert.equal(pageHref(1), '/');
+  assert.equal(pageHref(3), '/3/');
+  assert.equal(pageHref(1, '/category/jobs/'), '/category/jobs/');
+  assert.equal(pageHref(3, '/category/jobs/'), '/category/jobs/3/');
 });

@@ -1,22 +1,27 @@
 ---
 // 카테고리·태그 목록 (UI 명세 5.3). 글은 발행일 내림차순으로 넘겨받는다.
+import type { Page } from 'astro';
 import Base from './Base.astro';
 import PostList from '../components/list/PostList.astro';
+import Pagination from '../components/list/Pagination.astro';
 import type { Post } from '../lib/posts';
 
 interface Props {
   label: '카테고리' | '태그';
   heading: string;
-  posts: Post[];
+  page: Page<Post>;
+  base: string;
   active?: string;
 }
 
-const { label, heading, posts, active } = Astro.props;
+const { label, heading, page, base, active } = Astro.props;
+const suffix = page.currentPage === 1 ? '' : ` ${page.currentPage}페이지`;
 ---
 
-<Base title={`${heading} | ${label}`} description={`${heading} 관련 글 목록`} active={active}>
+<Base title={`${heading} | ${label}${suffix}`} description={`${heading} 관련 글 목록${suffix}`} active={active}>
   <p class="mb-2 t-label text-accent">{label}</p>
   <h1 class="mb-2 t-display">{heading}</h1>
-  <p class="mb-6 t-caption text-muted sm:mb-8">글 {posts.length}개 · 최신순</p>
-  <PostList posts={posts} />
+  <p class="mb-6 t-caption text-muted sm:mb-8">글 {page.total}개 · 최신순</p>
+  <PostList posts={page.data} />
+  <Pagination page={page} base={base} />
 </Base>
