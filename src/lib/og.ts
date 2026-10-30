@@ -42,7 +42,7 @@ export async function renderOg({ title, category }: { title: string; category?: 
       h({ maxWidth: 1000, fontSize: 64, lineHeight: 1.3, fontWeight: 700, letterSpacing: '-0.03em', whiteSpace: 'pre-line', wordBreak: 'keep-all', lineClamp: 3 }, title),
       h({ alignItems: 'center', justifyContent: 'space-between', fontSize: 22, color: '#5b665f' }, [
         h({}, new URL(SITE.url).host),
-        h({}, `${SITE.kicker} — ${SITE.tagline}`),
+        h({}, SITE.tagline),
       ]),
     ],
   );

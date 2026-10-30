@@ -18,7 +18,6 @@ const { page } = Astro.props;
   class="max-w-[768px] pt-8 pb-6 sm:pt-12 sm:pb-8"
 >
   <h1 class="sr-only">{SITE.name}</h1>
-  <p class="mb-1.5 t-label text-accent sm:mb-2">{SITE.kicker}</p>
   <p class="mb-7 t-h2 sm:mb-10">{SITE.tagline}</p>
   <PostList posts={page.data} showCategory />
   <Pagination page={page} />

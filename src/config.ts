@@ -3,8 +3,7 @@
 export const SITE = {
   name: '알짜',
   url: 'https://aljjatip.com',
-  description: '생활·돈·행정 — 알아두면 쓸모있는 정보',
-  kicker: '생활 · 돈 · 행정',
+  description: '알아두면 쓸모있는 정보',
   tagline: '알아두면 쓸모있는 정보',
   author: 'DY',
 };
