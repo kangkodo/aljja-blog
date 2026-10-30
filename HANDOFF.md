@@ -84,6 +84,7 @@ npm test         # 페이지 번호 생략 규칙 테스트
 - 글쓰기 에이전트용 기반·도구 (`.agents/product-marketing.md`, `.agents/skills/write-post/`, `AGENTS.md` 안내): Claude가 이 저장소에서 구축·관리 (2026-10-28 추가).
 - 글 발행 (주제 받으면 글 작성·푸시·배포): Muse가 담당 (별도 PAT 보유). 글쓰기 에이전트는 바뀔 수 있으며, 어떤 에이전트든 `AGENTS.md` → write-post 스킬 순서로 읽고 따른다. Muse 지시문에 "작업 전 `AGENTS.md`를 읽을 것"을 넣어 둔다.
 - 마케팅 스킬 17개(coreyhaines31/marketingskills)는 소유자 맥의 `.claude/skills/`에만 설치돼 있다 (git 제외). 다른 환경에서 필요하면 `npx skills add coreyhaines31/marketingskills --skill <이름> -a <에이전트>`로 설치. write-post 스킬은 AI 말버릇 제거에 그중 copy-editing을 쓴다.
+- humanize-korean 스킬(epoko77-ai/im-not-ai, 커밋 고정)도 write-post 8번에서 쓴다. git에는 올라가지 않으므로 새 환경에서는 `bash .agents/setup-humanize-korean.sh claude`(Codex면 `codex`)로 프로젝트 안에 설치한다. 작업 폴더 `_workspace/`는 git 제외.
 - 소유자 직접 처리: Cloudflare 대시보드 조작, 도메인·이메일 설정, 각종 값 제공.
 
 ## 배포

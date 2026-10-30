@@ -1,7 +1,7 @@
 # Product Marketing Context — 알짜
 
-**Document version:** v3
-**Last updated:** 2026-10-28
+**Document version:** v4
+**Last updated:** 2026-10-31
 
 ## Product Overview (블로그 개요)
 **One-liner:** 생활·돈·행정 분야에서 사람들이 가끔 검색하는 질문에 정확한 숫자·표·FAQ로 답하는 정보 블로그. 분야는 계속 늘려 간다.
@@ -117,14 +117,14 @@ AI 답변은 경쟁 상대이면서 유입 경로이기도 하다. AI가 알짜 
 - **쿠팡 파트너스 고지:** 쿠팡 링크를 넣는 글에는 대가를 받는다는 고지 문구를 반드시 넣는다 (공정위 추천·보증 심사지침).
 - **체험담 금지:** "직접 가 보니", "써 보니"처럼 하지 않은 경험을 한 것처럼 쓰지 않는다.
 - **AI 작성 언급 금지:** 사이트 어디에도 AI가 썼다는 말을 넣지 않는다.
-- **AI 말버릇 제거:** 에이전트가 직접 고치지 않고 반드시 copy-editing 스킬을 거친다.
+- **AI 말버릇 제거:** 에이전트가 직접 고치지 않고 반드시 copy-editing과 humanize-korean 스킬을 거친다.
 
 ## Objections (독자가 의심하는 점)
 | Objection | Response |
 |-----------|----------|
 | "이거 최신 맞아?" | 제목에 연도, 본문 위쪽에 기준일, 글 끝에 출처와 확인 날짜 |
 | "광고 글 아냐?" | 협찬 후기 없음, 제휴 링크는 고지, 담백한 말투 |
-| "AI가 대충 쓴 글 아냐?" | 구체적인 숫자·조건·출처. AI 말버릇 제거 (copy-editing 스킬) |
+| "AI가 대충 쓴 글 아냐?" | 구체적인 숫자·조건·출처. AI 말버릇 제거 (copy-editing, humanize-korean 스킬) |
 | "내 경우에도 맞아?" | 조건별 정리, 예외 상황 명시 |
 
 **Anti-persona (알짜가 돕지 않는 독자):**
@@ -224,6 +224,7 @@ AI 답변은 경쟁 상대이면서 유입 경로이기도 하다. AI가 알짜 
 
 ## Changelog
 *Newest first. One line per revision: what changed and why.*
+- v4 (2026-10-31) — Content Rules·Objections: AI 말버릇 제거에 humanize-korean 추가.
 - v3 (2026-10-28) — Goals: 테스트 글 3개 삭제로 현재 지표를 글 0개로 갱신. Brand Voice 예문은 삭제된 글에서 뽑은 것이지만 말투 기준으로 그대로 둠.
 - v2 (2026-10-28) — Product Overview: 분야 7개를 사이트에 적용 (기존 `돈 계산기`·`행정 서류` 대체, 기존 글 3개 이동).
 - v1 (2026-10-28) — Initial context.
