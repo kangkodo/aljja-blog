@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
 import PostList from '../components/list/PostList.astro';
 import Pagination from '../components/list/Pagination.astro';
 import { SITE, PAGE_SIZE } from '../config';
@@ -18,7 +19,11 @@ const { page } = Astro.props;
   class="max-w-[768px] pt-8 pb-6 sm:pt-12 sm:pb-8"
 >
   <h1 class="sr-only">{SITE.name}</h1>
-  <p class="mb-7 t-h2 sm:mb-10">{SITE.tagline}</p>
+  {page.currentPage === 1 ? (
+    <Hero />
+  ) : (
+    <p class="mb-7 t-h2 sm:mb-10">{SITE.tagline}</p>
+  )}
   <PostList posts={page.data} showCategory />
   <Pagination page={page} />
 </Base>

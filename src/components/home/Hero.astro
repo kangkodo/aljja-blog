@@ -1,0 +1,182 @@
+---
+// 홈 1페이지 히어로. 정지 이미지가 내용이고, 움직임은 페이지 로드 뒤에 그 위로 얹는다.
+// 문구가 이미지에 들어 있어 alt도 그 문구를 그대로 쓴다. 문구를 바꾸려면 public/hero/ 이미지를 새로 만든다.
+// 좌표는 원본 2000×670 기준이다.
+const box = (x: number, y: number, w: number, h: number) =>
+  `left:${x / 20}%;top:${y / 6.7}%;width:${w / 20}%;height:${h / 6.7}%`;
+const origin = (x: number, y: number) => `transform-origin:${x / 20}% ${y / 6.7}%`;
+
+const under = [
+  ['head-under', 1620, 10, 216, 234],
+  ['leaves-under', 1002, 106, 282, 230],
+  ['leek-under', 1658, 202, 168, 166],
+] as const;
+const lights = [
+  ['w1', 1266, 264, 34, 38],
+  ['w2', 1242, 314, 34, 38],
+  ['w3', 1358, 284, 24, 40],
+  ['w4', 1386, 272, 22, 38],
+] as const;
+---
+
+<div class="hero mb-7 rounded-xl sm:mb-10">
+  <img
+    src="/hero/still-1000.webp"
+    srcset="/hero/still-1000.webp 1000w, /hero/still-2000.webp 2000w"
+    sizes="(min-width: 768px) 736px, calc(100vw - 32px)"
+    width="2000"
+    height="670"
+    alt="알아두면 쓸모있는 정보. 생활에 필요한 정보를 한곳에"
+    fetchpriority="high"
+    class="h-auto w-full"
+  />
+  <div class="stage" data-hero-stage hidden aria-hidden="true">
+    {under.map(([name, x, y, w, h]) => <img alt="" data-src={`/hero/${name}.webp`} style={box(x, y, w, h)} />)}
+    <div id="hero-head" style={origin(1790, 98)}><img alt="" data-src="/hero/head.webp" style={box(1644, 34, 168, 186)} /></div>
+    <div id="hero-leaves" style={origin(1138, 302)}><img alt="" data-src="/hero/leaves.webp" style={box(1026, 130, 234, 182)} /></div>
+    <img alt="" data-src="/hero/house-front.webp" style={box(1202, 146, 88, 190)} />
+    <div id="hero-leek" style={origin(1705, 345)}><img alt="" data-src="/hero/leek.webp" style={box(1682, 226, 120, 118)} /></div>
+    {lights.map(([name, x, y, w, h]) => <img class="light" alt="" data-src={`/hero/${name}.webp`} style={box(x, y, w, h)} />)}
+    <svg viewBox="0 0 2000 670">
+      <path class="check" pathLength="1" d="M1027 388Q1033 394 1038 400Q1049 384 1064 370"></path>
+      <path class="check" pathLength="1" d="M991 434Q997 440 1002 446Q1013 430 1028 416"></path>
+      <path class="check" pathLength="1" d="M954 483Q960 489 965 495Q976 479 991 465"></path>
+      <path class="steam" pathLength="1" d="M1818 444c-11-12 11-22 0-34c-11-12 11-18 0-30"></path>
+      <path class="steam" pathLength="1" d="M1840 448c-11-12 11-22 0-34c-11-12 11-18 0-30"></path>
+      <path class="steam" pathLength="1" d="M1862 444c-11-12 11-22 0-34c-11-12 11-18 0-30"></path>
+    </svg>
+  </div>
+</div>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+  .stage,
+  .stage div,
+  .stage svg {
+    position: absolute;
+    inset: 0;
+  }
+  .stage svg {
+    width: 100%;
+    height: 100%;
+  }
+  .stage img {
+    position: absolute;
+    max-width: none;
+  }
+  .light,
+  path {
+    opacity: 0;
+  }
+  path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 6;
+  }
+  .check {
+    stroke: #2a62c4;
+  }
+  .steam {
+    stroke: #8fb0d4;
+  }
+</style>
+
+<script>
+  const stage = document.querySelector<HTMLElement>('[data-hero-stage]');
+
+  // 이야기 구간. 양 끝은 정지 이미지와 같은 상태라 끊김 없이 반복된다.
+  const FROM = 2.4;
+  const LENGTH = 8.2;
+
+  const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+  function track(keys: number[][], t: number) {
+    if (t <= keys[0][0]) return keys[0][1];
+    for (let i = 1; i < keys.length; i++) {
+      const [t0, v0] = keys[i - 1];
+      const [t1, v1] = keys[i];
+      if (t <= t1) return v0 + (v1 - v0) * easeInOut((t - t0) / (t1 - t0));
+    }
+    return keys[keys.length - 1][1];
+  }
+
+  const sway = [
+    ['hero-leaves', [[3, 0], [3.9, 2.8], [4.9, -2.4], [5.9, 1.8], [6.8, 0], [7.3, 0], [8.1, 2.2], [9, -1.6], [9.8, 0]]],
+    ['hero-head', [[5, 0], [5.7, 5], [6.1, 5], [6.9, -3], [7.5, 0]]],
+    ['hero-leek', [[5.8, 0], [6.5, 3.2], [7.3, -2.6], [8.1, 1.8], [8.9, 0]]],
+  ] as const;
+  const lightTimes = [[3.3, 8], [3.6, 8.2], [3.9, 8.4], [4.2, 8.6]];
+
+  function start(root: HTMLElement) {
+    const swaying = sway.map(([id, keys]) => [root.querySelector<HTMLElement>(`#${id}`)!, keys as unknown as number[][]] as const);
+    const lights = [...root.querySelectorAll<HTMLElement>('.light')];
+    const checks = [...root.querySelectorAll<SVGPathElement>('.check')];
+    const steam = [...root.querySelectorAll<SVGPathElement>('.steam')];
+    const stroke = (path: SVGPathElement, drawn: number, opacity: number, y = 0) => {
+      path.style.cssText = `stroke-dasharray:1 1;stroke-dashoffset:${1 - drawn};opacity:${opacity};transform:translateY(${y}px)`;
+    };
+
+    function draw(t: number) {
+      for (const [el, keys] of swaying) el.style.transform = `rotate(${track(keys, t)}deg)`;
+      lights.forEach((el, i) => {
+        const [on, off] = lightTimes[i];
+        el.style.opacity = String(track([[on, 0], [on + 0.35, 0.92], [off, 0.92], [off + 0.5, 0]], t));
+      });
+      checks.forEach((path, i) => {
+        const begin = 2.7 + i;
+        stroke(path, track([[begin, 0], [begin + 0.45, 1]], t), track([[begin, 0], [begin + 0.05, 1], [9.6, 1], [10.2, 0]], t));
+      });
+      steam.forEach((path, i) => {
+        let [drawn, opacity, y] = [0, 0, 0];
+        for (const begin of [3, 5.4, 7.8]) {
+          const u = (t - begin - i * 0.3) / 2.1;
+          if (u > 0 && u < 1) {
+            drawn = Math.min(1, u * 2);
+            opacity = track([[0, 0], [0.25, 0.8], [0.7, 0.8], [1, 0]], u);
+            y = -16 * u;
+          }
+        }
+        stroke(path, drawn, opacity, y);
+      });
+    }
+
+    let elapsed = 0;
+    let last = 0;
+    let frame = 0;
+    const tick = (now: number) => {
+      elapsed = (elapsed + Math.min((now - last) / 1000, 0.05)) % LENGTH;
+      last = now;
+      draw(FROM + elapsed);
+      frame = requestAnimationFrame(tick);
+    };
+    // 화면 밖이면 멈춘다.
+    new IntersectionObserver(([entry]) => {
+      cancelAnimationFrame(frame);
+      if (entry.isIntersecting) {
+        last = performance.now();
+        frame = requestAnimationFrame(tick);
+      }
+    }).observe(root);
+  }
+
+  if (stage && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    addEventListener(
+      'load',
+      async () => {
+        const images = [...stage.querySelectorAll('img')];
+        await Promise.all(
+          images.map((image) => {
+            image.src = image.dataset.src!;
+            return image.decode();
+          }),
+        );
+        stage.hidden = false;
+        start(stage);
+      },
+      { once: true },
+    );
+  }
+</script>
